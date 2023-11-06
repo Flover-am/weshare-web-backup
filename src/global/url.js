@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:9090/'
+const BASE_URL = '/api/'
 
 const COURSE_URL = BASE_URL + 'course'
 const RESOURCE_URL = BASE_URL + 'resource'
