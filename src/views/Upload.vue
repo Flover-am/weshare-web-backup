@@ -33,10 +33,10 @@ axios.get(URL.findAllName).then(function (resp) {
 
 
 const options = [
-    {
-        value: '文件',
-        label: '文件',
-    },
+    // {
+    //     value: '文件',
+    //     label: '文件',
+    // },
     {
         value: '链接',
         label: '链接',
