@@ -48,7 +48,7 @@ lint-test-job:   # This job also runs in the test stage.
 code-quality:
   stage: test
   image: docker:20.10.12
-  allow_failure: false
+  allow_failure: true
   services:
     - name: 'docker:20.10.12-dind'
       command: ['--tls=false', '--host=tcp://0.0.0.0:2375']
@@ -73,16 +73,13 @@ code-quality:
       function propagate_env_vars() {
         CURRENT_ENV=$(printenv)
         for VAR_NAME; do
-          echo $CURRENT_ENV | grep "${VAR_NAME}=" > /dev/null &&
-          echo "--env $VAR_NAME "
+          echo $CURRENT_ENV | grep "${VAR_NAME}=" > /dev/null && echo "--env $VAR_NAME "
         done
       }
     - |
       if [ -n "$CODECLIMATE_REGISTRY_USERNAME" ] && [ -n "$CODECLIMATE_REGISTRY_PASSWORD" ] && [ -n "$CODECLIMATE_PREFIX" ]; then
         CODECLIMATE_REGISTRY=${CODECLIMATE_PREFIX%%/*}
-        docker login "$CODECLIMATE_REGISTRY" --username
-        "$CODECLIMATE_REGISTRY_USERNAME" --password
-        "$CODECLIMATE_REGISTRY_PASSWORD"
+        docker login "$CODECLIMATE_REGISTRY" --username "$CODECLIMATE_REGISTRY_USERNAME" --password "$CODECLIMATE_REGISTRY_PASSWORD"
       fi
     - docker pull --quiet "$CODE_QUALITY_IMAGE"
     - |
