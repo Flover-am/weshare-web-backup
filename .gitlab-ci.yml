@@ -16,6 +16,16 @@
 # This specific template is located at:
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
 
+include:
+  - template: SAST.gitlab-ci.yml
+  - template: Dependency-Scanning.gitlab-ci.yml
+nodejs-scan-sast:
+  tags: [ docker ]
+semgrep-sast:
+  tags: [ docker ]
+gemnasium-dependency_scanning:
+  tags: [ docker ]
+
 stages:          # List of stages for jobs, and their order of execution
   - build
   - test
@@ -55,13 +65,3 @@ deploy-job:      # This job runs in the deploy stage.
       web; docker load -i web.tar; docker run -d --name web -p 80:80
       devops/web /bin/bash -c "nginx; tail -f /dev/null"'
     - echo "Application successfully deployed."
-
-include:
-  - template: SAST.gitlab-ci.yml
-  - template: Dependency-Scanning.gitlab-ci.yml
-nodejs-scan-sast:
-  tags: [ docker ]
-semgrep-sast:
-  tags: [ docker ]
-gemnasium-dependency_scanning:
-  tags: [ docker ]
