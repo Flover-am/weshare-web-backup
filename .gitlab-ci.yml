@@ -51,7 +51,7 @@ code-quality:
   allow_failure: false
   services:
     - name: 'docker:20.10.12-dind'
-  command: ['--tls=false', '--host=tcp://0.0.0.0:2375']
+    command: ['--tls=false', '--host=tcp://0.0.0.0:2375']
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_CERT_PATH: ""
