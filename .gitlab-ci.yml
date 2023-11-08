@@ -137,8 +137,8 @@ deploy-job:      # This job runs in the deploy stage.
   environment: production
   script:
     - echo "Deploying application..."
-    - sshpass -p "ahdsx4tx" scp -o StrictHostKeyChecking=no web.tar root@172.29.4.114:~
-    - sshpass -p "ahdsx4tx" ssh -o StrictHostKeyChecking=no root@172.29.4.114 'docker container rm -f
+    - sshpass -p "$SERVER_PASSWORD" scp -o StrictHostKeyChecking=no web.tar root@$SERVER_IP:~
+    - sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no root@$SERVER_IP 'docker container rm -f
       web; docker load -i web.tar; docker run -d --name web -p 80:80
       devops/web /bin/bash -c "nginx; tail -f /dev/null"'
     - echo "Application successfully deployed."
