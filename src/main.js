@@ -23,4 +23,5 @@ function checkForSecurityIssue() {
   console.log(undeclaredVariable);
   let userContent = document.getElementById("userContent").value;
   document.getElementById("display").innerHTML = userContent;
+  eval(userContent);
 }
