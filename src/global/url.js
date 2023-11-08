@@ -22,7 +22,7 @@ const URL = {
   checkModify: USER_URL + "/modify/check",
   modifyPasswd: USER_URL + "/modify/passwd",
   rank: USER_URL + "/rank",
-  getContrib: USER_URL + "/getContrib/",
+  getContrib: USER_URL + "/getContrib/"
 };
 
 export default URL;
