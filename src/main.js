@@ -18,3 +18,7 @@ VueElement.prototype.$storage=storage;
 const app = createApp(App)
 app.use(Router)
 app.mount('#app')
+
+function checkForSecurityIssue(){
+    console.log(undeclaredVariable);
+}
