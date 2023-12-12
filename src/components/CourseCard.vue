@@ -1,6 +1,5 @@
 <script setup>
 import { useRouter } from "vue-router";
-import CourseTag from "./CourseTag.vue";
 
 const props = defineProps({
   // 展示课程信息列表
