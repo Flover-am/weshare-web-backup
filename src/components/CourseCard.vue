@@ -135,7 +135,8 @@ function goToCourse(item) {
 }
 
 #card-int:hover {
-  box-shadow: var(--el-box-shadow);
+  cursor: pointer;
+  transition: all 0.5s;
   color: var(--color-main);
 }
 img {
