@@ -1,4 +1,4 @@
-const BASE_URL = "/api/";
+const BASE_URL = "http://124.222.18.205:9898/";
 
 const COURSE_URL = BASE_URL + "course";
 const RESOURCE_URL = BASE_URL + "resource";
