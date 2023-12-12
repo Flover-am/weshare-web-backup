@@ -44,7 +44,7 @@ function goToCourse(item) {
         <div class="card-header-name" @click="goToCourse(item)">
           {{ item.coursename }}
           <img
-            src="src\resources\shoucang.png"
+            src="../assets/img/shoucang.png"
             style="float: right"
             id="shoucang"
           />
