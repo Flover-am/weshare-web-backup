@@ -1,7 +1,7 @@
 FROM node:lts-stretch as build-stage
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --registry=https://registry.npm.taobao.org
+RUN npm install --registry=https://repo.nju.edu.cn/repository/npm/
 COPY ./ .
 RUN npm run build
 
