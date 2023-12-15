@@ -29,7 +29,11 @@ const routes = [
 const Router = createRouter({
   // 使用 hash 模式。
   history: createWebHashHistory(),
-  routes, // `routes: routes` 的缩写
+  routes, // `routes: routes` 的缩写,
+  scrollBehavior(to, from, savedPosition) {
+    // 返回一个位置对象，表示滚动到顶部
+    return { top: 0 };
+  },
 });
 
 export default Router;

@@ -16,6 +16,7 @@ import { useDark } from "@vueuse/core";
 import storage from "../utils/LocalStorage";
 import axios from "axios";
 import URL from "../global/url";
+import WeShare from "/src/assets/WESHARE.svg";
 
 const isDark = useDark();
 
@@ -75,6 +76,9 @@ function clickLogout() {
 function clickUpload() {
   router.push({ path: "/upload" });
 }
+function clickLogo() {
+  router.push({ path: "/" });
+}
 
 const route = useRoute();
 </script>
@@ -93,8 +97,12 @@ const route = useRoute();
         --el-menu-hover-bg-color: transparent;
       "
     >
-      <el-menu-item style="display: var(--LOGO-display)">
-        WE SHARE
+      <el-menu-item style="display: var(--nav-other-display)">
+        <img
+          @click="clickLogo"
+          :src="WeShare"
+          style="height: 60px; margin: 0 auto"
+        />
       </el-menu-item>
       <!-- index属性放路径-ysh -->
       <el-menu-item index="/">
