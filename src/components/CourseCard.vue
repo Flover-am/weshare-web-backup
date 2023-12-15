@@ -39,6 +39,7 @@ function goToCourse(item) {
       <img
         :src="'data:image/png;base64,' + item.picture"
         @click="goToCourse(item)"
+        style="width: 14rem; height: 20rem; object-fit: cover"
       />
       <div class="card-header">
         <div class="card-header-name" @click="goToCourse(item)">
@@ -47,6 +48,7 @@ function goToCourse(item) {
             src="../assets/img/shoucang.png"
             style="float: right"
             id="shoucang"
+            alt="picture"
           />
         </div>
 
