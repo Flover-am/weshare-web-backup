@@ -10,6 +10,7 @@ import {
   Reading,
   UserFilled,
   MostlyCloudy,
+  User,
   Plus,
 } from "@element-plus/icons-vue";
 import { useRouter, useRoute } from "vue-router";
@@ -74,13 +75,23 @@ function clickLogout() {
   }
   router.go(0);
 }
+
 function clickUpload() {
-  router.push({ path: "/upload" });
+  if (storage.get("userID") == null){
+    router.push({ path: "/login"})
+  }
+  else{
+    router.push({ path: "/upload" });
+  }
+  
+  
 }
+
 function clickLogo() {
   router.push({ path: "/" });
 }
 const route = useRoute();
+
 </script>
 
 <template>
@@ -129,6 +140,28 @@ const route = useRoute();
           </el-icon>
           <span style="margin-right: 5px">排行</span>
         </template>
+      </el-menu-item>
+
+      <el-menu-item  style="display: var(--nav-menu-display);">
+        <template #title>
+          <el-icon @click="clickUpload">
+            <Plus />
+          </el-icon>
+          <span style="margin-right: 5px" @click="clickUpload">上传</span>
+        </template>
+      </el-menu-item>
+      
+      <el-menu-item  style="display: var(--nav-menu-display);">
+        <template #title>
+          <el-icon @click="clickAvatar">
+            <User />
+          </el-icon>
+          <span style="margin-right: 5px" @click="clickAvatar">我的</span>
+        </template>
+      </el-menu-item>
+      
+      <el-menu-item  style="display: var(--nav-menu-display);">
+        <SearchBar style="margin-right: 5px" />
       </el-menu-item>
     </el-menu>
     <div style="display: var(--nav-other-display); overflow: hidden">
@@ -314,5 +347,6 @@ const route = useRoute();
 :root {
   --el-menu-active-color: var(--color-main);
   --el-menu-hover-text-color: var(--color-main);
+  --menu-display: flex
 }
 </style>

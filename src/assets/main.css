@@ -37,6 +37,7 @@
   --rank-table-width: 50rem;
   --nav-upload-display: inline-flex;
   --nav-other-display: flex;
+  --nav-menu-display: flex;
 
   /* 主题色，可自行添加 */
   --color-main: rgb(1, 132, 127);
