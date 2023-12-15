@@ -9,6 +9,7 @@ import Account from "../views/Account.vue";
 import rank from "../views/Rank.vue";
 import upload from "../views/Upload.vue";
 import Class from "../views/Class.vue";
+import MyPage from "../views/Mypage.vue";
 
 // 定义一些路由
 // 每个路由都需要映射到一个组件。
@@ -21,17 +22,14 @@ const routes = [
   { path: "/rank", component: rank },
   { path: "/upload", component: upload },
   { path: "/class", component: Class },
+  { path: "/mypage", component: MyPage },
 ];
 
 // 创建路由实例并传递 `routes` 配置
 const Router = createRouter({
   // 使用 hash 模式。
   history: createWebHashHistory(),
-  routes, // `routes: routes` 的缩写,
-  scrollBehavior(to, from, savedPosition) {
-    // 返回一个位置对象，表示滚动到顶部
-    return { top: 0 };
-  },
+  routes, // `routes: routes` 的缩写
 });
 
 export default Router;
