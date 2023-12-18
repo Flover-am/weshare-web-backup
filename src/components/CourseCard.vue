@@ -1,8 +1,62 @@
+<template>
+  <div class="course-cards">
+    <el-card
+      v-for="item in currentCourses"
+      :key="item.courseid"
+      class="course-card"
+      style="--el-card-padding: 0"
+    >
+      <template #header>
+        <img
+          :src="'data:image/png;base64,' + item.picture"
+          @click="goToCourse(item)"
+        />
+        <div class="card-header">
+          <div class="card-header-name" @click="goToCourse(item)">
+            {{ item.coursename }}
+            <img
+              src="../assets/img/shoucang.png"
+              style="float: right"
+              id="shoucang"
+            />
+          </div>
+
+          <div class="card-header-tags">
+            <CourseTag
+              style="margin: 0 0.5rem 0 0"
+              :tag="item.department"
+              color="rgb(119, 127, 79)"
+            />
+            <CourseTag
+              style="margin: 0 0.5rem 0 0"
+              :tag="item.studytime"
+              color="rgb(79, 49, 45)"
+            />
+          </div>
+        </div>
+      </template>
+
+      <p class="card-intro" @click="goToCourse(item)" id="card-int">
+        {{ item.introduction }}
+      </p>
+    </el-card>
+  </div>
+  <div class="pagination-container">
+    <el-pagination
+      v-if="courses.length > pageSize"
+      :current-page="currentPage"
+      :page-size="1"
+      :total="Math.ceil(courses.length / pageSize)"
+      @current-change="handlePageChange"
+    />
+  </div>
+</template>
+
 <script setup>
 import { useRouter } from "vue-router";
+import { ref, onMounted, computed } from "vue";
 
 const props = defineProps({
-  // 展示课程信息列表
   courses: {
     type: Array,
     default: [],
@@ -10,6 +64,14 @@ const props = defineProps({
 });
 
 const router = useRouter();
+const currentPage = ref(1);
+const pageSize = 8; // 每页显示的数量
+
+const currentCourses = computed(() => {
+  const startIndex = (currentPage.value - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  return props.courses.slice(startIndex, endIndex);
+});
 
 // 跳转课程详情页
 function goToCourse(item) {
@@ -26,53 +88,12 @@ function goToCourse(item) {
     },
   });
 }
+
+// 处理分页变化
+function handlePageChange(page) {
+  currentPage.value = page;
+}
 </script>
-
-<template>
-  <el-card
-    v-for="item in courses"
-    :key="item.courseid"
-    class="course-card"
-    style="--el-card-padding: 0"
-  >
-    <template #header>
-      <img
-        :src="'data:image/png;base64,' + item.picture"
-        @click="goToCourse(item)"
-        style="width: 14rem; height: 20rem; object-fit: cover"
-      />
-      <div class="card-header">
-        <div class="card-header-name" @click="goToCourse(item)">
-          {{ item.coursename }}
-          <img
-            src="../assets/img/shoucang.png"
-            style="float: right"
-            id="shoucang"
-            alt="picture"
-          />
-        </div>
-
-        <div class="card-header-tags">
-          <!-- <CourseTag style="margin: 0 0.5rem 0 0;" tag="课程" color="rgb(126, 125, 187)" /> -->
-          <CourseTag
-            style="margin: 0 0.5rem 0 0"
-            :tag="item.department"
-            color="rgb(119, 127, 79)"
-          />
-          <CourseTag
-            style="margin: 0 0.5rem 0 0"
-            :tag="item.studytime"
-            color="rgb(79, 49, 45)"
-          />
-        </div>
-      </div>
-    </template>
-
-    <p class="card-intro" @click="goToCourse(item)" id="card-int">
-      {{ item.introduction }}
-    </p>
-  </el-card>
-</template>
 
 <style scoped>
 @keyframes PopUp {
@@ -91,11 +112,15 @@ function goToCourse(item) {
   float: True;
   margin-top: 5px;
 }
+.course-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 1rem;
+}
+
 .course-card {
-  width: 14rem;
   box-shadow: 0 1px 3px hsl(0deg 0% 7% / 10%);
   border-radius: 8px;
-  margin: 0 1rem 2rem 1rem;
   box-sizing: border-box;
   transition: all 0.3s;
   animation-name: PopUp;
@@ -105,7 +130,9 @@ function goToCourse(item) {
 .course-card:hover {
   box-shadow: var(--el-box-shadow);
 }
-
+.pagination-container {
+  margin-top: 1rem; /* 为确保翻页组件与卡片之间有一定间距 */
+}
 .card-header {
   font-size: large;
   font-weight: bolder;
