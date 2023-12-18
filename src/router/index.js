@@ -9,6 +9,7 @@ import Account from "../views/Account.vue";
 import rank from "../views/Rank.vue";
 import upload from "../views/Upload.vue";
 import Class from "../views/Class.vue";
+import MyPage from "../views/Mypage.vue";
 
 // 定义一些路由
 // 每个路由都需要映射到一个组件。
@@ -21,6 +22,7 @@ const routes = [
   { path: "/rank", component: rank },
   { path: "/upload", component: upload },
   { path: "/class", component: Class },
+  { path: "/mypage", component: MyPage },
 ];
 
 // 创建路由实例并传递 `routes` 配置

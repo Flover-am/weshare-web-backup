@@ -77,21 +77,16 @@ function clickLogout() {
 }
 
 function clickUpload() {
-  if (storage.get("userID") == null){
-    router.push({ path: "/login"})
-  }
-  else{
+  if (storage.get("userID") == null) {
+    router.push({ path: "/login" });
+  } else {
     router.push({ path: "/upload" });
   }
-  
-  
 }
-
 function clickLogo() {
   router.push({ path: "/" });
 }
 const route = useRoute();
-
 </script>
 
 <template>
@@ -142,7 +137,7 @@ const route = useRoute();
         </template>
       </el-menu-item>
 
-      <el-menu-item  style="display: var(--nav-menu-display);">
+      <el-menu-item style="display: var(--nav-menu-display)">
         <template #title>
           <el-icon @click="clickUpload">
             <Plus />
@@ -150,8 +145,8 @@ const route = useRoute();
           <span style="margin-right: 5px" @click="clickUpload">上传</span>
         </template>
       </el-menu-item>
-      
-      <el-menu-item  style="display: var(--nav-menu-display);">
+
+      <el-menu-item style="display: var(--nav-menu-display)">
         <template #title>
           <el-icon @click="clickAvatar">
             <User />
@@ -159,9 +154,27 @@ const route = useRoute();
           <span style="margin-right: 5px" @click="clickAvatar">我的</span>
         </template>
       </el-menu-item>
-      
-      <el-menu-item  style="display: var(--nav-menu-display);">
+
+      <el-menu-item style="display: var(--nav-menu-display)">
         <SearchBar style="margin-right: 5px" />
+      </el-menu-item>
+
+      <el-menu-item index="/mypage" v-if="hasLogin">
+        <template #title>
+          <el-icon>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 1024 1024"
+              data-v-ea893728=""
+            >
+              <path
+                fill="currentColor"
+                d="m512 747.84 228.16 119.936a6.4 6.4 0 0 0 9.28-6.72l-43.52-254.08 184.512-179.904a6.4 6.4 0 0 0-3.52-10.88l-255.104-37.12L517.76 147.904a6.4 6.4 0 0 0-11.52 0L392.192 379.072l-255.104 37.12a6.4 6.4 0 0 0-3.52 10.88L318.08 606.976l-43.584 254.08a6.4 6.4 0 0 0 9.28 6.72zM313.6 924.48a70.4 70.4 0 0 1-102.144-74.24l37.888-220.928L88.96 472.96A70.4 70.4 0 0 1 128 352.896l221.76-32.256 99.2-200.96a70.4 70.4 0 0 1 126.208 0l99.2 200.96 221.824 32.256a70.4 70.4 0 0 1 39.04 120.064L774.72 629.376l37.888 220.928a70.4 70.4 0 0 1-102.144 74.24L512 820.096l-198.4 104.32z"
+              ></path>
+            </svg>
+          </el-icon>
+          <span style="margin-right: 5px">我的</span>
+        </template>
       </el-menu-item>
     </el-menu>
     <div style="display: var(--nav-other-display); overflow: hidden">
@@ -347,6 +360,5 @@ const route = useRoute();
 :root {
   --el-menu-active-color: var(--color-main);
   --el-menu-hover-text-color: var(--color-main);
-  --menu-display: flex
 }
 </style>
