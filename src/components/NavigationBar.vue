@@ -73,6 +73,8 @@ function clickLogout() {
   if (storage.get("userID") !== null) {
     storage.remove("userID");
   }
+  router.push({ path: "/" });
+  router.push({ path: "/" });
   router.go(0);
 }
 
@@ -146,18 +148,18 @@ const route = useRoute();
         </template>
       </el-menu-item>
 
-      <el-menu-item style="display: var(--nav-menu-display)">
-        <template #title>
-          <el-icon @click="clickAvatar">
-            <User />
-          </el-icon>
-          <span style="margin-right: 5px" @click="clickAvatar">我的</span>
-        </template>
-      </el-menu-item>
+      <!--      <el-menu-item style="display: var(&#45;&#45;nav-menu-display)">-->
+      <!--        <template #title>-->
+      <!--          <el-icon @click="clickAvatar">-->
+      <!--            <User />-->
+      <!--          </el-icon>-->
+      <!--          <span style="margin-right: 5px" @click="clickAvatar">我的</span>-->
+      <!--        </template>-->
+      <!--      </el-menu-item>-->
 
-      <el-menu-item style="display: var(--nav-menu-display)">
-        <SearchBar style="margin-right: 5px" />
-      </el-menu-item>
+      <!--      <el-menu-item style="display: var(&#45;&#45;nav-menu-display)">-->
+      <!--        <SearchBar style="margin-right: 5px" />-->
+      <!--      </el-menu-item>-->
 
       <el-menu-item index="/mypage" v-if="hasLogin">
         <template #title>
