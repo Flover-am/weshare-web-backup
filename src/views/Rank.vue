@@ -21,6 +21,7 @@ function checkNotLogin() {
 const currentUserID = storage.get("userID");
 const colors = ref(["#99A9BF", "#F7BA2A", "#FF9900"]); // same as { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
 const tableData = ref([]);
+
 // url为对应接口的映射
 axios.get(URL.rank).then(function (resp) {
   tableData.value = resp.data.slice(0, 29);
@@ -47,7 +48,7 @@ function cellStyle(obj) {
     return { color: "rgb(239, 185, 0)", textAlign: "center" };
   else if (isCurrentUserRow(obj))
     // Check if the row belongs to the current user
-    return { color: "red", textAlign: "center" };
+    return { color: "#77ebd5", textAlign: "center" };
   else if (obj.columnIndex === 1) return { textAlign: "center" };
   else return { textAlign: "center" };
 }
@@ -90,7 +91,7 @@ function cellStyle(obj) {
               <GoldMedal />
             </el-icon>
             <el-icon
-              v-if="scope.row.username == username && scope.row.rank != 1"
+              v-if="isCurrentUserRow(scope) && scope.row.rank != 1"
               style="vertical-align: -0.2em"
               size="large"
               color="#77ebd5"

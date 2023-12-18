@@ -18,6 +18,7 @@
               src="../assets/img/shoucang.png"
               style="float: right"
               id="shoucang"
+              alt="picture"
             />
           </div>
 
@@ -65,7 +66,7 @@ const props = defineProps({
 
 const router = useRouter();
 const currentPage = ref(1);
-const pageSize = 8; // 每页显示的数量
+const pageSize = 16; // 每页显示的数量
 
 const currentCourses = computed(() => {
   const startIndex = (currentPage.value - 1) * pageSize;
@@ -173,7 +174,6 @@ img {
   cursor: pointer;
   width: 100%;
 }
-
 img:hover {
   transform: scale(1.1);
 }
