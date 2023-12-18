@@ -21,6 +21,7 @@ watch(route, () => {
     menu.classList.remove("sticky");
     header.classList.remove("sticky");
     document.documentElement.style.setProperty("--nav-other-display", "none");
+    document.documentElement.style.setProperty("--nav-menu-display", "flex");
   } else {
     container.classList.remove("bg-img");
     container.style.setProperty("background-image", "");
@@ -32,6 +33,7 @@ watch(route, () => {
     menu.classList.add("sticky");
     header.classList.add("sticky");
     document.documentElement.style.setProperty("--nav-other-display", "flex");
+    document.documentElement.style.setProperty("--nav-menu-display", "none");
   }
 });
 
@@ -47,6 +49,7 @@ window.onscroll = function () {
       navContainer.style.setProperty("border-bottom", "");
       container.style.setProperty("background-image", "url(" + BgImg + ")");
       document.documentElement.style.setProperty("--nav-other-display", "none");
+      document.documentElement.style.setProperty("--nav-menu-display", "flex");
     } else if (window.scrollY >= header.offsetTop) {
       menu.classList.add("sticky");
       header.classList.add("sticky");
@@ -56,12 +59,14 @@ window.onscroll = function () {
       );
       container.style.setProperty("background-image", "");
       document.documentElement.style.setProperty("--nav-other-display", "flex");
+      document.documentElement.style.setProperty("--nav-menu-display", "none");
     } else {
       menu.classList.remove("sticky");
       header.classList.remove("sticky");
       navContainer.style.setProperty("border-bottom", "");
       container.style.setProperty("background-image", "url(" + BgImg + ")");
       document.documentElement.style.setProperty("--nav-other-display", "none");
+      document.documentElement.style.setProperty("--nav-menu-display", "flex");
     }
   }
 };

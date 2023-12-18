@@ -9,6 +9,7 @@ import {
   GoldMedal,
 } from "@element-plus/icons-vue";
 import URL from "../global/url";
+import storage from '../utils/LocalStorage';
 
 const colors = ref(["#99A9BF", "#F7BA2A", "#FF9900"]); // same as { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
 const tableData = ref([]);
@@ -17,13 +18,15 @@ axios.get(URL.rank).then(function (resp) {
   tableData.value = resp.data;
   console.log(tableData.value);
 });
-
 function cellStyle(obj) {
   if (obj.rowIndex === 0)
     return { color: "rgb(239, 185, 0)", textAlign: "center" };
   else if (obj.columnIndex === 1) return { textAlign: "center" };
   else return { textAlign: "center" };
 }
+
+const hasLogin=ref(storage.get("userID")!==null).value
+const username=ref(hasLogin?storage.get("userID"):'').value
 </script>
 
 <template>
@@ -62,9 +65,16 @@ function cellStyle(obj) {
             >
               <GoldMedal />
             </el-icon>
+            <el-icon
+              v-if="scope.row.username == username && scope.row.rank != 1"
+              style="vertical-align: -0.2em"
+              size="large"
+              color="#77ebd5"
+            ><User /></el-icon>
             {{ scope.row.username }}
           </template>
         </el-table-column>
+
         <el-table-column prop="contribution" label="贡献值">
           <template #header>
             <el-icon style="vertical-align: -0.2em" size="large">
@@ -87,6 +97,7 @@ function cellStyle(obj) {
             </el-tooltip>
           </template>
         </el-table-column>
+
         <el-table-column type="index" label="排名" width="240">
           <template #header>
             <el-icon style="vertical-align: -0.2em" size="large">

@@ -1,4 +1,6 @@
 <script setup>
+import WeShare from "../assets/WESHARE.svg";
+
 import { ref, watch, computed, getCurrentInstance } from "vue";
 import {
   House,
@@ -8,6 +10,7 @@ import {
   Reading,
   UserFilled,
   MostlyCloudy,
+  User,
   Plus,
 } from "@element-plus/icons-vue";
 import { useRouter, useRoute } from "vue-router";
@@ -16,7 +19,6 @@ import { useDark } from "@vueuse/core";
 import storage from "../utils/LocalStorage";
 import axios from "axios";
 import URL from "../global/url";
-import WeShare from "/src/assets/WESHARE.svg";
 
 const isDark = useDark();
 
@@ -49,13 +51,13 @@ function clickAvatar() {
   if (!storage.get("userID")) {
     router.push("/login");
   } else {
-    ElNotification({
-      title: "while\(true\)",
-      message: "\{ learn\(coding\); \}",
-      showClose: false,
-      position: "bottom-right",
-      duration: "1000",
-    });
+    // ElNotification({
+    //     title: 'while\(true\)',
+    //     message: '\{ learn\(coding\); \}',
+    //     showClose: false,
+    //     position:'bottom-right',
+    //     duration:'1000'
+    // })
   }
 }
 /**
@@ -73,13 +75,17 @@ function clickLogout() {
   }
   router.go(0);
 }
+
 function clickUpload() {
-  router.push({ path: "/upload" });
+  if (storage.get("userID") == null) {
+    router.push({ path: "/login" });
+  } else {
+    router.push({ path: "/upload" });
+  }
 }
 function clickLogo() {
   router.push({ path: "/" });
 }
-
 const route = useRoute();
 </script>
 
@@ -114,7 +120,6 @@ const route = useRoute();
           <span style="margin-right: 5px">首页</span>
         </template>
       </el-menu-item>
-
       <el-menu-item index="/class">
         <template #title>
           <el-icon>
@@ -123,7 +128,6 @@ const route = useRoute();
           <span style="margin-right: 5px">分类</span>
         </template>
       </el-menu-item>
-
       <el-menu-item index="/rank">
         <template #title>
           <el-icon>
@@ -131,6 +135,28 @@ const route = useRoute();
           </el-icon>
           <span style="margin-right: 5px">排行</span>
         </template>
+      </el-menu-item>
+
+      <el-menu-item style="display: var(--nav-menu-display)">
+        <template #title>
+          <el-icon @click="clickUpload">
+            <Plus />
+          </el-icon>
+          <span style="margin-right: 5px" @click="clickUpload">上传</span>
+        </template>
+      </el-menu-item>
+
+      <el-menu-item style="display: var(--nav-menu-display)">
+        <template #title>
+          <el-icon @click="clickAvatar">
+            <User />
+          </el-icon>
+          <span style="margin-right: 5px" @click="clickAvatar">我的</span>
+        </template>
+      </el-menu-item>
+
+      <el-menu-item style="display: var(--nav-menu-display)">
+        <SearchBar style="margin-right: 5px" />
       </el-menu-item>
 
       <el-menu-item index="/mypage" v-if="hasLogin">
