@@ -72,6 +72,7 @@ function clickChangePassword() {
 function clickLogout() {
   if (storage.get("userID") !== null) {
     storage.remove("userID");
+    //storage.remove("courses")
   }
   router.push({ path: "/" });
   router.push({ path: "/" });
