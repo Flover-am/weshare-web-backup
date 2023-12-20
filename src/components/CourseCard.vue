@@ -14,11 +14,20 @@
         <div class="card-header">
           <div class="card-header-name" @click="goToCourse(item)">
             {{ item.coursename }}
+          </div>
+          <div @click="addOrDelete(item)">
             <img
-              src="../assets/img/shoucang.png"
+              src="../assets/img/unstar.png"
+              v-if="!item.isLiked"
               style="float: right"
               id="shoucang"
-              alt="picture"
+            />
+
+            <img
+              src="../assets/img/star.png"
+              v-if="item.isLiked"
+              style="float: right"
+              id="shoucang"
             />
           </div>
 
@@ -54,7 +63,7 @@
 </template>
 
 <script setup>
-import { ref, onActivated,onMounted, computed } from "vue";
+import { ref, onActivated, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import storage from "../utils/LocalStorage";
 import axios from "axios";
@@ -93,9 +102,6 @@ function goToCourse(item) {
     },
   });
 }
-<<<<<<< src/components/CourseCard.vue
-
-
 // 处理分页变化
 function handlePageChange(page) {
   currentPage.value = page;
@@ -126,62 +132,60 @@ function addOrDelete(item) {
 }
 </script>
 
-<template>
-  <el-card
-    v-for="item in courses"
-    :key="item.courseid"
-    class="course-card"
-    style="--el-card-padding: 0"
-  >
-    <template #header>
-      <img
-        :src="'data:image/png;base64,' + item.picture"
-        @click="goToCourse(item)"
-        style="width: 14rem; height: 20rem; object-fit: cover"
-      />
-      <div class="card-header">
-        <div class="card-header-name" @click="goToCourse(item)">
-          {{ item.coursename }}
-        </div>
-        <div @click="addOrDelete(item)">
-          <img
-            src="../assets/img/unstar.png"
-            v-if="!item.isLiked"
-            style="float: right"
-            id="shoucang"
-          />
+<!--<template>-->
+<!--  <el-card-->
+<!--    v-for="item in courses"-->
+<!--    :key="item.courseid"-->
+<!--    class="course-card"-->
+<!--    style="&#45;&#45;el-card-padding: 0"-->
+<!--  >-->
+<!--    <template #header>-->
+<!--      <img-->
+<!--        :src="'data:image/png;base64,' + item.picture"-->
+<!--        @click="goToCourse(item)"-->
+<!--        style="width: 14rem; height: 20rem; object-fit: cover"-->
+<!--      />-->
+<!--      <div class="card-header">-->
+<!--        <div class="card-header-name" @click="goToCourse(item)">-->
+<!--          {{ item.coursename }}-->
+<!--        </div>-->
+<!--        <div @click="addOrDelete(item)">-->
+<!--          <img-->
+<!--            src="../assets/img/unstar.png"-->
+<!--            v-if="!item.isLiked"-->
+<!--            style="float: right"-->
+<!--            id="shoucang"-->
+<!--          />-->
 
-          <img
-            src="../assets/img/star.png"
-            v-if="item.isLiked"
-            style="float: right"
-            id="shoucang"
-          />
-        </div>
+<!--          <img-->
+<!--            src="../assets/img/star.png"-->
+<!--            v-if="item.isLiked"-->
+<!--            style="float: right"-->
+<!--            id="shoucang"-->
+<!--          />-->
+<!--        </div>-->
 
-        <div class="card-header-tags">
-          <!-- <CourseTag style="margin: 0 0.5rem 0 0;" tag="课程" color="rgb(126, 125, 187)" /> -->
-          <CourseTag
-            style="margin: 0 0.5rem 0 0"
-            :tag="item.department"
-            color="rgb(119, 127, 79)"
-          />
-          <CourseTag
-            style="margin: 0 0.5rem 0 0"
-            :tag="item.studytime"
-            color="rgb(79, 49, 45)"
-          />
-        </div>
-      </div>
-    </template>
+<!--        <div class="card-header-tags">-->
+<!--          &lt;!&ndash; <CourseTag style="margin: 0 0.5rem 0 0;" tag="课程" color="rgb(126, 125, 187)" /> &ndash;&gt;-->
+<!--          <CourseTag-->
+<!--            style="margin: 0 0.5rem 0 0"-->
+<!--            :tag="item.department"-->
+<!--            color="rgb(119, 127, 79)"-->
+<!--          />-->
+<!--          <CourseTag-->
+<!--            style="margin: 0 0.5rem 0 0"-->
+<!--            :tag="item.studytime"-->
+<!--            color="rgb(79, 49, 45)"-->
+<!--          />-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </template>-->
 
-    <p class="card-intro" @click="goToCourse(item)" id="card-int">
-      {{ item.introduction }}
-    </p>
-  </el-card>
-</template>
-
-</script>
+<!--    <p class="card-intro" @click="goToCourse(item)" id="card-int">-->
+<!--      {{ item.introduction }}-->
+<!--    </p>-->
+<!--  </el-card>-->
+<!--</template>-->
 
 <style scoped>
 @keyframes PopUp {
