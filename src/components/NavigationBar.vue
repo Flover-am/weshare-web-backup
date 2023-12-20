@@ -69,8 +69,9 @@ function clickChangePassword() {
 function clickLogout() {
   if (storage.get("userID") !== null) {
     storage.remove("userID");
+    //storage.remove("courses")
   }
-  router.go(0);
+  router.go(-1);
 }
 function clickUpload() {
   router.push({ path: "/upload" });

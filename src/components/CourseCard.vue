@@ -1,5 +1,8 @@
 <script setup>
+import { ref, onActivated } from "vue";
 import { useRouter } from "vue-router";
+import storage from "../utils/LocalStorage";
+import axios from "axios";
 
 const props = defineProps({
   // 展示课程信息列表
@@ -9,6 +12,8 @@ const props = defineProps({
   },
 });
 
+var hasLogin = ref(storage.get("userID") !== null).value;
+const username = ref(!hasLogin ? " 未登录" : storage.get("userID")).value;
 const router = useRouter();
 
 // 跳转课程详情页
@@ -25,6 +30,30 @@ function goToCourse(item) {
       viewtime: item.viewtimes,
     },
   });
+}
+function addOrDelete(item) {
+  console.log(
+    "http://124.222.18.205:997/course/addToLike/" + username + "/" + item.id,
+  );
+  if (item.isLiked == false) {
+    axios
+      .get(
+        "http://124.222.18.205:997/course/addToLike/" +
+          username +
+          "/" +
+          item.id,
+      )
+      .then(function (resp) {});
+  } else {
+    axios
+      .get(
+        "http://124.222.18.205:997/course/removeFromLike/" +
+          username +
+          "/" +
+          item.id,
+      )
+      .then(function (resp) {});
+  }
 }
 </script>
 
@@ -44,11 +73,20 @@ function goToCourse(item) {
       <div class="card-header">
         <div class="card-header-name" @click="goToCourse(item)">
           {{ item.coursename }}
+        </div>
+        <div @click="addOrDelete(item)">
           <img
-            src="../assets/img/shoucang.png"
+            src="../assets/img/unstar.png"
+            v-if="!item.isLiked"
             style="float: right"
             id="shoucang"
-            alt="picture"
+          />
+
+          <img
+            src="../assets/img/star.png"
+            v-if="item.isLiked"
+            style="float: right"
+            id="shoucang"
           />
         </div>
 
