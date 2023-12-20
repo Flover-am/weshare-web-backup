@@ -4,13 +4,24 @@ import NavigationBar from "./components/NavigationBar.vue";
 import BgImg from "./assets/img/home_pic.jpg";
 import BgImgDark from "./assets/img/home_pic_dark.jpg";
 import WeShare from "./assets/WESHARE.svg";
+import WeShareDark from "./assets/WESHAREDARK.svg";
 import { useRoute } from "vue-router";
 import { watch } from "vue";
 const route = useRoute();
-var isDark = true;
+var isDark = false;
+var bgimgurl = isDark ? BgImgDark : BgImg;
+var WeShareurl = isDark ? WeShareDark : WeShare;
 function closeMain(val) {
   isDark = val;
-  Console.log(val);
+  if (isDark) {
+    bgimgurl = BgImgDark;
+    WeShareurl = WeShareDark;
+  } else {
+    bgimgurl = BgImg;
+    WeShareurl = WeShare;
+  }
+  console.log(bgimgurl);
+  console.log(WeShareurl);
 }
 component: NavigationBar;
 
@@ -21,7 +32,7 @@ watch(route, () => {
   let navContainer = document.getElementById("nav-container");
   if (route.path === "/") {
     container.classList.add("bg-img");
-    container.style.setProperty("background-image", "url(" + isDark + ")");
+    container.style.setProperty("background-image", "url(" + bgimgurl + ")");
     container.style.setProperty("height", 120 + "px");
     navContainer.style.setProperty("border-bottom", "");
     menu.classList.remove("sticky");
@@ -45,7 +56,6 @@ watch(route, () => {
 
 window.onscroll = function () {
   if (route.path === "/") {
-    console.log(isDark);
     let menu = document.getElementById("menu");
     let header = document.getElementById("header");
     let container = document.getElementById("container");
@@ -54,7 +64,7 @@ window.onscroll = function () {
       menu.classList.remove("sticky");
       header.classList.remove("sticky");
       navContainer.style.setProperty("border-bottom", "");
-      container.style.setProperty("background-image", "url(" + isDark + ")");
+      container.style.setProperty("background-image", "url(" + bgimgurl + ")");
       document.documentElement.style.setProperty("--nav-other-display", "none");
       document.documentElement.style.setProperty("--nav-menu-display", "flex");
     } else if (window.scrollY >= header.offsetTop) {
@@ -71,7 +81,7 @@ window.onscroll = function () {
       menu.classList.remove("sticky");
       header.classList.remove("sticky");
       navContainer.style.setProperty("border-bottom", "");
-      container.style.setProperty("background-image", "url(" + isDark + ")");
+      container.style.setProperty("background-image", "url(" + bgimgurl + ")");
       document.documentElement.style.setProperty("--nav-other-display", "none");
       document.documentElement.style.setProperty("--nav-menu-display", "flex");
     }
@@ -85,8 +95,9 @@ window.onscroll = function () {
       <div style="height: 60px; display: flex; align-items: center">
         <img
           v-if="route.path == '/'"
-          :src="WeShare"
+          :src="WeShareurl"
           style="height: 60px; margin: 0 auto"
+          class="fill: black"
         />
       </div>
       <el-header id="header" class="header">
@@ -94,7 +105,7 @@ window.onscroll = function () {
         <!--通过传递 `to` 来指定链接 -->
         <!--`<router-link>` 将呈现一个带有正确 `href` 属性的 `<a>` 标签-->
         <!-- <router-link to="/">返回首页</router-link> -->
-        <NavigationBar ref="NavigationBar" v-on:closeMain="closeMain" />
+        <NavigationBar ref="NavigationBar" v-on:change="closeMain" />
       </el-header>
     </div>
     <el-main style="top: 1rem; padding: 1rem">
