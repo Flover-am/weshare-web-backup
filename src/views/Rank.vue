@@ -9,18 +9,46 @@ import {
   GoldMedal,
 } from "@element-plus/icons-vue";
 import URL from "../global/url";
-
+import storage from "../utils/LocalStorage.js";
+import { useRouter } from "vue-router";
+const router = useRouter();
+window.onActivated = checkNotLogin();
+function checkNotLogin() {
+  if (!storage.get("userID")) {
+    router.push("/login");
+  }
+}
+const currentUserID = storage.get("userID");
 const colors = ref(["#99A9BF", "#F7BA2A", "#FF9900"]); // same as { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
 const tableData = ref([]);
+
 // url为对应接口的映射
 axios.get(URL.rank).then(function (resp) {
-  tableData.value = resp.data;
-  console.log(tableData.value);
+  tableData.value = resp.data.slice(0, 29);
+  // 找到当前用户的信息
+  var currentUserInfo;
+  for (var i = 0; i < resp.data.length; i++) {
+    if (resp.data[i].username == currentUserID) currentUserInfo = resp.data[i];
+  }
+  // 移动当前用户信息到数组末尾
+  if (currentUserInfo) {
+    const index = resp.data.indexOf(currentUserInfo);
+    if (index >= 30) {
+      tableData.value.push(currentUserInfo);
+    } else {
+      tableData.value = resp.data.slice(0, 30);
+    }
+  }
 });
-
+function isCurrentUserRow(scope) {
+  return scope.row.username === currentUserID;
+}
 function cellStyle(obj) {
   if (obj.rowIndex === 0)
     return { color: "rgb(239, 185, 0)", textAlign: "center" };
+  else if (isCurrentUserRow(obj))
+    // Check if the row belongs to the current user
+    return { color: "#77ebd5", textAlign: "center" };
   else if (obj.columnIndex === 1) return { textAlign: "center" };
   else return { textAlign: "center" };
 }
@@ -62,6 +90,13 @@ function cellStyle(obj) {
             >
               <GoldMedal />
             </el-icon>
+            <el-icon
+              v-if="isCurrentUserRow(scope) && scope.row.rank != 1"
+              style="vertical-align: -0.2em"
+              size="large"
+              color="#77ebd5"
+              ><User
+            /></el-icon>
             {{ scope.row.username }}
           </template>
         </el-table-column>

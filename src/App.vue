@@ -2,11 +2,17 @@
 import NavigationBar from "./components/NavigationBar.vue";
 
 import BgImg from "./assets/img/home_pic.jpg";
+import BgImgDark from "./assets/img/home_pic_dark.jpg";
 import WeShare from "./assets/WESHARE.svg";
 import { useRoute } from "vue-router";
 import { watch } from "vue";
-
 const route = useRoute();
+var isDark = true;
+function closeMain(val) {
+  isDark = val;
+  Console.log(val);
+}
+component: NavigationBar;
 
 watch(route, () => {
   let container = document.getElementById("container");
@@ -15,12 +21,13 @@ watch(route, () => {
   let navContainer = document.getElementById("nav-container");
   if (route.path === "/") {
     container.classList.add("bg-img");
-    container.style.setProperty("background-image", "url(" + BgImg + ")");
+    container.style.setProperty("background-image", "url(" + isDark + ")");
     container.style.setProperty("height", 120 + "px");
     navContainer.style.setProperty("border-bottom", "");
     menu.classList.remove("sticky");
     header.classList.remove("sticky");
     document.documentElement.style.setProperty("--nav-other-display", "none");
+    document.documentElement.style.setProperty("--nav-menu-display", "flex");
   } else {
     container.classList.remove("bg-img");
     container.style.setProperty("background-image", "");
@@ -32,11 +39,13 @@ watch(route, () => {
     menu.classList.add("sticky");
     header.classList.add("sticky");
     document.documentElement.style.setProperty("--nav-other-display", "flex");
+    document.documentElement.style.setProperty("--nav-menu-display", "none");
   }
 });
 
 window.onscroll = function () {
   if (route.path === "/") {
+    console.log(isDark);
     let menu = document.getElementById("menu");
     let header = document.getElementById("header");
     let container = document.getElementById("container");
@@ -45,8 +54,9 @@ window.onscroll = function () {
       menu.classList.remove("sticky");
       header.classList.remove("sticky");
       navContainer.style.setProperty("border-bottom", "");
-      container.style.setProperty("background-image", "url(" + BgImg + ")");
+      container.style.setProperty("background-image", "url(" + isDark + ")");
       document.documentElement.style.setProperty("--nav-other-display", "none");
+      document.documentElement.style.setProperty("--nav-menu-display", "flex");
     } else if (window.scrollY >= header.offsetTop) {
       menu.classList.add("sticky");
       header.classList.add("sticky");
@@ -56,12 +66,14 @@ window.onscroll = function () {
       );
       container.style.setProperty("background-image", "");
       document.documentElement.style.setProperty("--nav-other-display", "flex");
+      document.documentElement.style.setProperty("--nav-menu-display", "none");
     } else {
       menu.classList.remove("sticky");
       header.classList.remove("sticky");
       navContainer.style.setProperty("border-bottom", "");
-      container.style.setProperty("background-image", "url(" + BgImg + ")");
+      container.style.setProperty("background-image", "url(" + isDark + ")");
       document.documentElement.style.setProperty("--nav-other-display", "none");
+      document.documentElement.style.setProperty("--nav-menu-display", "flex");
     }
   }
 };
@@ -82,7 +94,7 @@ window.onscroll = function () {
         <!--通过传递 `to` 来指定链接 -->
         <!--`<router-link>` 将呈现一个带有正确 `href` 属性的 `<a>` 标签-->
         <!-- <router-link to="/">返回首页</router-link> -->
-        <NavigationBar />
+        <NavigationBar ref="NavigationBar" v-on:closeMain="closeMain" />
       </el-header>
     </div>
     <el-main style="top: 1rem; padding: 1rem">
@@ -104,7 +116,6 @@ window.onscroll = function () {
           transition: all 5s;
         "
       >
-        南京大学软件学院互联网计算课程大作业
       </el-divider>
     </el-footer>
   </el-container>
