@@ -1,6 +1,6 @@
 <script setup>
 import WeShare from "../assets/WESHARE.svg";
-
+import WeShareDark from "../assets/WESHAREDARK.svg";
 import { ref, watch, computed, getCurrentInstance } from "vue";
 import {
   House,
@@ -34,7 +34,7 @@ var hasLogin = ref(storage.get("userID") !== null).value;
 const userID = ref(!hasLogin ? " 未登录" : storage.get("userID"));
 
 var userContribution = -1;
-
+var WeShareurl = WeShare;
 const userContrib = () => {
   if (!hasLogin) {
     return userContribution;
@@ -47,8 +47,8 @@ const userContrib = () => {
 };
 function change() {
   console.log(isDark._value);
-  if (isDark._value) return BgImg;
-  else return BgImgDark;
+  if (isDark._value) WeShareurl = WeShareDark;
+  else WeShareurl = WeShare;
 }
 /**
  * 点击头像事件
@@ -80,6 +80,7 @@ function clickChangePassword() {
 function clickLogout() {
   if (storage.get("userID") !== null) {
     storage.remove("userID");
+    //storage.remove("courses")
   }
   router.push({ path: "/" });
   router.push({ path: "/" });
@@ -116,7 +117,7 @@ const route = useRoute();
       <el-menu-item style="display: var(--nav-other-display)">
         <img
           @click="clickLogo"
-          :src="WeShare"
+          :src="WeShareurl"
           style="height: 60px; margin: 0 auto"
         />
       </el-menu-item>
@@ -225,7 +226,10 @@ const route = useRoute();
           inline-prompt
           :active-icon="MostlyCloudy"
           :inactive-icon="sunIcon"
-          @change="$emit('change', this.isDark)"
+          @change="
+            $emit('change', this.isDark);
+            change();
+          "
         />
       </div>
       <div class="user-profile">

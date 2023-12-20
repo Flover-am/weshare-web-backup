@@ -4,16 +4,24 @@ import NavigationBar from "./components/NavigationBar.vue";
 import BgImg from "./assets/img/home_pic.jpg";
 import BgImgDark from "./assets/img/home_pic_dark.jpg";
 import WeShare from "./assets/WESHARE.svg";
+import WeShareDark from "./assets/WESHAREDARK.svg";
 import { useRoute } from "vue-router";
 import { watch } from "vue";
 const route = useRoute();
-var isDark = true;
-var bgimgurl = isDark ? BgImg : BgImgDark;
+var isDark = false;
+var bgimgurl = isDark ? BgImgDark : BgImg;
+var WeShareurl = isDark ? WeShareDark : WeShare;
 function closeMain(val) {
   isDark = val;
-  if (isDark) bgimgurl = BgImgDark;
-  else bgimgurl = BgImg;
+  if (isDark) {
+    bgimgurl = BgImgDark;
+    WeShareurl = WeShareDark;
+  } else {
+    bgimgurl = BgImg;
+    WeShareurl = WeShare;
+  }
   console.log(bgimgurl);
+  console.log(WeShareurl);
 }
 component: NavigationBar;
 
@@ -87,7 +95,7 @@ window.onscroll = function () {
       <div style="height: 60px; display: flex; align-items: center">
         <img
           v-if="route.path == '/'"
-          :src="WeShare"
+          :src="WeShareurl"
           style="height: 60px; margin: 0 auto"
           class="fill: black"
         />

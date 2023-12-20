@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from "vue";
 import CourseCard from "../components/CourseCard.vue";
-import { CollectionTag, Filter } from "@element-plus/icons-vue";
 import storage from "../utils/LocalStorage";
 
 // 课程信息数据获取
@@ -31,12 +30,17 @@ window.onresize = function () {
 };
 
 // 筛选课程
-function filterCourses(index, indexPath, item) {
+function filterCourses(index) {
   console.log(index);
   let allCourses = storage.get("courses");
-  showCourses.value = allCourses.filter(
-    (x) => (x.department == index) | (x.studytime == index),
-  );
+
+  if (index == "收藏") {
+    showCourses.value = allCourses.filter((x) => x.isLiked == true);
+  } else {
+    //这里其实应该是筛选上传的
+    showCourses.value = allCourses.filter((x) => x.isLiked == true);
+  }
+
   if (showCourses.value.length == 0) {
     ElMessage({
       message: "抱歉，未找到此类资源",
@@ -60,8 +64,8 @@ function filterCourses(index, indexPath, item) {
       unique-opened
     >
       <el-scrollbar style="height: 200px">
-        <el-menu-item index="软件学院"> 我的收藏 </el-menu-item>
-        <el-menu-item index=""> 我的上传 </el-menu-item>
+        <el-menu-item index="收藏"> 我的收藏 </el-menu-item>
+        <el-menu-item index="上传"> 我的上传 </el-menu-item>
       </el-scrollbar>
     </el-menu>
   </div>

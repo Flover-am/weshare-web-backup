@@ -11,13 +11,23 @@
           <img
             :src="'data:image/png;base64,' + item.picture"
             @click="goToCourse(item)"
-            class="header-img"
+            style="width: 16rem; height: 20rem; object-fit: cover"
           />
           <div class="card-header">
             <div class="card-header-name" @click="goToCourse(item)">
               {{ item.coursename }}
+            </div>
+            <div @click="addOrDelete(item)">
               <img
-                src="../assets/img/shoucang.png"
+                src="../assets/img/unstar.png"
+                v-if="!item.isLiked"
+                style="float: right"
+                id="shoucang"
+              />
+
+              <img
+                src="../assets/img/star.png"
+                v-if="item.isLiked"
                 style="float: right"
                 id="shoucang"
               />
@@ -56,8 +66,10 @@
 </template>
 
 <script setup>
+import { ref, onActivated, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import { ref, onMounted, computed } from "vue";
+import storage from "../utils/LocalStorage";
+import axios from "axios";
 
 const props = defineProps({
   courses: {
@@ -66,6 +78,8 @@ const props = defineProps({
   },
 });
 
+var hasLogin = ref(storage.get("userID") !== null).value;
+const username = ref(!hasLogin ? " 未登录" : storage.get("userID")).value;
 const router = useRouter();
 const currentPage = ref(1);
 const pageSize = 8; // 每页显示的数量
@@ -91,13 +105,35 @@ function goToCourse(item) {
     },
   });
 }
-
 // 处理分页变化
 function handlePageChange(page) {
   currentPage.value = page;
 }
+function addOrDelete(item) {
+  console.log(
+    "http://124.222.18.205:997/course/addToLike/" + username + "/" + item.id,
+  );
+  if (item.isLiked == false) {
+    axios
+      .get(
+        "http://124.222.18.205:997/course/addToLike/" +
+          username +
+          "/" +
+          item.id,
+      )
+      .then(function (resp) {});
+  } else {
+    axios
+      .get(
+        "http://124.222.18.205:997/course/removeFromLike/" +
+          username +
+          "/" +
+          item.id,
+      )
+      .then(function (resp) {});
+  }
+}
 </script>
-
 <style scoped>
 @keyframes PopUp {
   from {
@@ -180,7 +216,6 @@ img {
   cursor: pointer;
   width: 100%;
 }
-
 img:hover {
   transform: scale(1.1);
 }
