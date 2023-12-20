@@ -1,55 +1,58 @@
 <template>
-  <div class="course-cards">
-    <el-card
-      v-for="item in currentCourses"
-      :key="item.courseid"
-      class="course-card"
-      style="--el-card-padding: 0"
-    >
-      <template #header>
-        <img
-          :src="'data:image/png;base64,' + item.picture"
-          @click="goToCourse(item)"
-        />
-        <div class="card-header">
-          <div class="card-header-name" @click="goToCourse(item)">
-            {{ item.coursename }}
-            <img
-              src="../assets/img/shoucang.png"
-              style="float: right"
-              id="shoucang"
-            />
-          </div>
+  <el-col>
+    <div class="course-cards">
+      <el-card
+        v-for="item in currentCourses"
+        :key="item.courseid"
+        class="course-card"
+        style="--el-card-padding: 0"
+      >
+        <template #header>
+          <img
+            :src="'data:image/png;base64,' + item.picture"
+            @click="goToCourse(item)"
+            class="header-img"
+          />
+          <div class="card-header">
+            <div class="card-header-name" @click="goToCourse(item)">
+              {{ item.coursename }}
+              <img
+                src="../assets/img/shoucang.png"
+                style="float: right"
+                id="shoucang"
+              />
+            </div>
 
-          <div class="card-header-tags">
-            <CourseTag
-              style="margin: 0 0.5rem 0 0"
-              :tag="item.department"
-              color="rgb(119, 127, 79)"
-            />
-            <CourseTag
-              style="margin: 0 0.5rem 0 0"
-              :tag="item.studytime"
-              color="rgb(79, 49, 45)"
-            />
+            <div class="card-header-tags">
+              <CourseTag
+                style="margin: 0 0.5rem 0 0"
+                :tag="item.department"
+                color="rgb(119, 127, 79)"
+              />
+              <CourseTag
+                style="margin: 0 0.5rem 0 0"
+                :tag="item.studytime"
+                color="rgb(79, 49, 45)"
+              />
+            </div>
           </div>
-        </div>
-      </template>
+        </template>
 
-      <p class="card-intro" @click="goToCourse(item)" id="card-int">
-        {{ item.introduction }}
-      </p>
-    </el-card>
-  </div>
-  <div class="pagination-container">
-    <el-pagination
-      v-if="courses.length > pageSize"
-      :current-page="currentPage"
-      :page-size="1"
-      :total="Math.ceil(courses.length / pageSize)"
-      @current-change="handlePageChange"
-    />
-  </div>
+        <p class="card-intro" @click="goToCourse(item)" id="card-int">
+          {{ item.introduction }}
+        </p>
+      </el-card>
+    </div>
+    <div class="pagination-container">
+      <el-pagination
+        v-if="courses.length > pageSize"
+        :current-page="currentPage"
+        :page-size="1"
+        :total="Math.ceil(courses.length / pageSize)"
+        @current-change="handlePageChange"
+      />
+    </div>
+  </el-col>
 </template>
 
 <script setup>
@@ -138,7 +141,11 @@ function handlePageChange(page) {
   font-weight: bolder;
   padding: 0.5rem 1rem;
 }
-
+.header-img {
+  width: 16rem;
+  height: 20rem;
+  object-fit: cover; /* 保持图片比例不变，同时填充整个容器 */
+}
 .card-header-name {
   font-weight: bolder;
   cursor: pointer;

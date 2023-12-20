@@ -13,6 +13,9 @@ import {
   User,
   Plus,
 } from "@element-plus/icons-vue";
+import BgImg from "../assets/img/home_pic.jpg";
+import BgImgDark from "../assets/img/home_pic_dark.jpg";
+import sunIcon from "@/components/SunIcon.vue";
 import { useRouter, useRoute } from "vue-router";
 import SearchBar from "./SearchBar.vue";
 import { useDark } from "@vueuse/core";
@@ -42,6 +45,11 @@ const userContrib = () => {
     return userContribution;
   }
 };
+function change() {
+  console.log(isDark._value);
+  if (isDark._value) return BgImg;
+  else return BgImgDark;
+}
 /**
  * 点击头像事件
  * 未登录：跳转至登录页面
@@ -211,11 +219,13 @@ const route = useRoute();
           style="
             align-self: center;
             --el-switch-on-color: var(--color-main);
+            --el-switch-off-color: rgb(216, 241, 241);
             margin: 0 1rem;
           "
           inline-prompt
           :active-icon="MostlyCloudy"
-          :inactive-icon="Sunny"
+          :inactive-icon="sunIcon"
+          @change="$emit('change', this.isDark)"
         />
       </div>
       <div class="user-profile">
