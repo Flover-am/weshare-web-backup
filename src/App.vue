@@ -6,19 +6,20 @@ import BgImgDark from "./assets/img/home_pic_dark.jpg";
 import WeShare from "./assets/WESHARE.svg";
 import WeShareDark from "./assets/WESHAREDARK.svg";
 import { useRoute } from "vue-router";
-import { watch } from "vue";
+import { watch, ref } from "vue";
 const route = useRoute();
 var isDark = false;
 var bgimgurl = isDark ? BgImgDark : BgImg;
-var WeShareurl = isDark ? WeShareDark : WeShare;
+const WeShareurl = ref();
+WeShareurl.value = isDark ? WeShareDark : WeShare;
 function closeMain(val) {
   isDark = val;
   if (isDark) {
     bgimgurl = BgImgDark;
-    WeShareurl = WeShareDark;
+    WeShareurl.value = WeShareDark;
   } else {
     bgimgurl = BgImg;
-    WeShareurl = WeShare;
+    WeShareurl.value = WeShare;
   }
   console.log(bgimgurl);
   console.log(WeShareurl);
@@ -96,8 +97,8 @@ window.onscroll = function () {
         <img
           v-if="route.path == '/'"
           :src="WeShareurl"
+          :key="WeShareurl"
           style="height: 60px; margin: 0 auto"
-          class="fill: black"
         />
       </div>
       <el-header id="header" class="header">
