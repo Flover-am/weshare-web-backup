@@ -9,8 +9,9 @@ const courses = ref(storage.get("courses"));
 const hasLogin = ref(storage.get("userID") !== null).value;
 const username = ref(hasLogin ? storage.get("userID") : "").value;
 
+// http://124.222.18.205:997/course/findAll/
 axios
-  .get("http://124.222.18.205:997/course/findAll/" + username)
+  .get("http://124.222.18.205:997/course/findAll" + username)
   .then(function (resp) {
     courses.value = resp.data;
     storage.set("courses", resp.data, 6000000);
