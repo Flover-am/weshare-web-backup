@@ -78,8 +78,6 @@ const props = defineProps({
   },
 });
 
-var hasLogin = ref(storage.get("userID") !== null).value;
-const username = ref(!hasLogin ? " 未登录" : storage.get("userID")).value;
 const router = useRouter();
 const currentPage = ref(1);
 const pageSize = 8; // 每页显示的数量
@@ -110,6 +108,11 @@ function handlePageChange(page) {
   currentPage.value = page;
 }
 function addOrDelete(item) {
+  if (storage.get("userID") == null) {
+    router.push("/login");
+    return;
+  }
+  const username = storage.get("userID");
   console.log(
     "http://124.222.18.205:997/course/addToLike/" + username + "/" + item.id,
   );
