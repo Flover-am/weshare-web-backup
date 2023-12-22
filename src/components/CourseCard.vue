@@ -87,7 +87,7 @@ const pageSize = 8; // 每页显示的数量
 const currentCourses = computed(() => {
   const startIndex = (currentPage.value - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  return props.courses.slice(startIndex, endIndex);
+  if (props.courses != null) return props.courses.slice(startIndex, endIndex);
 });
 
 // 跳转课程详情页
