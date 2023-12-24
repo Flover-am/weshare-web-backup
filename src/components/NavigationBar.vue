@@ -35,7 +35,7 @@ var hasLogin = ref(storage.get("userID") !== null).value;
 const userID = ref(!hasLogin ? " 未登录" : storage.get("userID"));
 
 var userContribution = -1;
-var WeShareurl = WeShare;
+var WeShareurl = ref(WeShare);
 const userContrib = () => {
   if (!hasLogin) {
     return userContribution;
@@ -46,13 +46,11 @@ const userContrib = () => {
     return userContribution;
   }
 };
-
 function change() {
   console.log(isDark._value);
-  if (isDark._value) WeShareurl = WeShareDark;
-  else WeShareurl = WeShare;
+  if (isDark._value) WeShareurl.value = WeShareDark;
+  else WeShareurl.value = WeShare;
 }
-
 /**
  * 点击头像事件
  * 未登录：跳转至登录页面
@@ -126,6 +124,7 @@ const route = useRoute();
         <img
             @click="clickLogo"
             :src="WeShareurl"
+          :key="WeShareurl"
             style="height: 60px; margin: 0 auto"
         />
       </el-menu-item>
