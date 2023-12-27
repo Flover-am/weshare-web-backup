@@ -45,7 +45,7 @@ const options = [
 export default {
   data() {
     return {
-      uploadFileURL: URL.uploadFile, // URL.uploadFile
+      uploadFileURL: URL.uploadFile , // "http://127.0.0.1:996/resource/uploadfile"
       uploadLinkURL: URL.uploadLink, // 上传文件的地址! URL.uploadLink
       loadFileParams: {
         // 上传文件的参数！
@@ -175,52 +175,36 @@ export default {
           .then(() => {
             // 本来想一次传多个文件,但数据库设计原因,只能一次传一个了
             let formData = new FormData()
-            formData.append("file",this.fileList[0])
-            this.loadFileParams.file = formData
-            axios({
-              method: 'post',
-              url: this.uploadFileURL,
-              data: {
-                'file' : formData,
-                'name' : this.loadFileParams.name,
-                "coursename" : this.loadFileParams.coursename,
-                "username": this.loadFileParams.username,
-                "type": this.loadFileParams.type,
-                "intro": this.loadFileParams.intro,
-              },
-              headers: {
-                'Content-Type': 'multipart/form-data',
+            formData.append("name", this.loadFileParams.name)
+            formData.append("coursename", this.loadFileParams.coursename)
+            formData.append("username", this.loadFileParams.username)
+            formData.append("type", this.loadFileParams.type)
+            formData.append("intro", this.loadFileParams.intro)
+            formData.append("file", this.fileList[0].raw)
+            axios
+                .post(this.uploadFileURL, formData)
+                .then(function (res) {
+                  let data = res.data
+                  console.log(data)
 
-              },
-              // transformRequest: [function(data, headers) {
-              //   // 去除post请求默认的Content-Type
-              //   delete headers.post['Content-Type']
-              //   return data
-              // }]
-            }).then(function (res) {
-              let data = res.data
-              console.log(data)
-
-              if (data == "exist") {
-                ElMessageBox.alert("资源名重复,请更换资源名", {
-                  confirmButtonText: "确定",
+                  if (data == "exists") {
+                    ElMessageBox.alert("资源名重复,请更换资源名", {
+                      confirmButtonText: "确定",
+                    })
+                  } else if (data == "fail") {
+                    ElMessageBox.alert("上传错误,请联系管理员", {
+                      confirmButtonText: "确定",
+                    })
+                  } else {
+                    ElMessageBox.alert("您已成功上传文件", {
+                      confirmButtonText: "确定",
+                    });
+                    that.clear()
+                  }
                 })
-              } else if (data == "fail") {
-                ElMessageBox.alert("上传错误,请联系管理员", {
-                  confirmButtonText: "确定",
-                })
-              } else {
-                ElMessageBox.alert("您已成功上传文件", {
-                  confirmButtonText: "确定",
-                });
-                that.clear()
-              }
-            })
           })
           .catch(() => {
-
           });
-
     },
     clear() {
       this.loadFileParams.name = ""
