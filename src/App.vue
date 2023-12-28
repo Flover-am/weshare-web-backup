@@ -119,12 +119,12 @@ window.onscroll = function () {
         </keep-alive>
       </router-view>
     </el-main>
-    <el-footer style="width: 100%; text-align: center; margin-top: 300px">
+    <el-footer style="width: 100%; text-align: center; margin-top: 50px">
       <el-divider
         content-position="center"
         style="
           --el-bg-color: var(--el-bg-color-page);
-          padding-bottom: 100px;
+          padding-bottom: 50px;
           transition: all 5s;
         "
       >
