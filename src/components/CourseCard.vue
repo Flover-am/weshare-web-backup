@@ -70,6 +70,7 @@ import { ref, onActivated, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import storage from "../utils/LocalStorage";
 import axios from "axios";
+import URL from "../global/url";
 
 const props = defineProps({
   courses: {
@@ -113,26 +114,14 @@ function addOrDelete(item) {
     return;
   }
   const username = storage.get("userID");
-  console.log(
-    "http://124.222.18.205:997/course/addToLike/" + username + "/" + item.id,
-  );
+
   if (item.isLiked == false) {
     axios
-      .get(
-        "http://124.222.18.205:997/course/addToLike/" +
-          username +
-          "/" +
-          item.id,
-      )
+      .get(URL.addToLike + username + "/" + item.id)
       .then(function (resp) {});
   } else {
     axios
-      .get(
-        "http://124.222.18.205:997/course/removeFromLike/" +
-          username +
-          "/" +
-          item.id,
-      )
+      .get(URL.removeFromLike + username + "/" + item.id)
       .then(function (resp) {});
   }
 }

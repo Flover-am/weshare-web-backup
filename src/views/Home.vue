@@ -3,19 +3,16 @@ import { ref, onActivated } from "vue";
 import CourseCard from "../components/CourseCard.vue";
 import storage from "../utils/LocalStorage";
 import axios from "axios";
-
+import URL from "../global/url";
 // 课程信息数据获取
 const courses = ref(storage.get("courses"));
 const hasLogin = ref(storage.get("userID") !== null).value;
 const username = ref(hasLogin ? storage.get("userID") : "").value;
 
-// http://124.222.18.205:997/course/findAll/
-axios
-  .get("http://124.222.18.205:997/course/findAll" + username)
-  .then(function (resp) {
-    courses.value = resp.data;
-    storage.set("courses", resp.data, 6000000);
-  });
+axios.get(URL.findAll + "/" + username).then(function (resp) {
+  courses.value = resp.data;
+  storage.set("courses", resp.data, 6000000);
+});
 
 onActivated(() => {
   document.scrollingElement.scrollTop = 0;

@@ -1,6 +1,6 @@
 <script setup>
 import CourseTag from "./CourseTag.vue";
-
+import URL from "../global/url";
 const props = defineProps({
   // 展示资源信息列表
   resources: {
@@ -17,8 +17,7 @@ const props = defineProps({
 // 下载功能
 function downLoad(id) {
   //通过window.location调起下载框
-  window.location =
-    "http://124.222.18.205:997/resource/downloadfile?resourceId=" + id; // url + 下载的resourceId
+  window.location = URL.downLoad + "?resourceId=" + id; // url + 下载的resourceId
 }
 </script>
 
