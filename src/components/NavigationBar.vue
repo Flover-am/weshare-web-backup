@@ -15,7 +15,7 @@ import {
   Star,
 } from "@element-plus/icons-vue";
 import BgImg from "../assets/img/home_pic.jpg";
-import BgImgDark from "../assets/img/home_pic_dark.jpg";
+import BgImgDark from "../assets/img/home_pic_dark.jpg"; //
 import sunIcon from "@/components/SunIcon.vue";
 import { useRouter, useRoute } from "vue-router";
 import SearchBar from "./SearchBar.vue";
@@ -186,7 +186,7 @@ const route = useRoute();
         </template>
       </el-menu-item>
       <el-menu-item style="display: var(--nav-menu-display)">
-        <SearchBar style="align-self: center"/>
+        <SearchBar style="align-self: center" />
       </el-menu-item>
 
       <el-menu-item index="/community" style="display: var(--nav-menu-display)">
