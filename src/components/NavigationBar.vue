@@ -13,6 +13,7 @@ import {
   User,
   Plus,
   Star,
+  Share
 } from "@element-plus/icons-vue";
 import BgImg from "../assets/img/home_pic.jpg";
 import BgImgDark from "../assets/img/home_pic_dark.jpg"; //
@@ -185,17 +186,19 @@ const route = useRoute();
           <span style="margin-right: 5px" @click="clickAvatar">我的</span>
         </template>
       </el-menu-item>
-      <el-menu-item style="display: var(--nav-menu-display)">
-        <SearchBar style="align-self: center" />
-      </el-menu-item>
+
 
       <el-menu-item index="/community" style="display: var(--nav-menu-display)">
         <template #title>
           <el-icon>
-            <Star />
+            <Share />
           </el-icon>
           <span style="margin-right: 5px">社区</span>
         </template>
+      </el-menu-item>
+
+      <el-menu-item style="display: var(--nav-menu-display)">
+        <SearchBar style="align-self: center" />
       </el-menu-item>
       <!--      <el-menu-item style="display: var(&#45;&#45;nav-menu-display)">-->
       <!--        <template #title>-->
