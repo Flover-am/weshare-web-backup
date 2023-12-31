@@ -1,6 +1,6 @@
 let BASE_URL = "http://124.222.18.205:997/";
 const LOCAL_URL = "http://localhost:9090/";
-BASE_URL = LOCAL_URL;
+// BASE_URL = LOCAL_URL;
 
 const COURSE_URL = BASE_URL + "course";
 const RESOURCE_URL = BASE_URL + "resource";
