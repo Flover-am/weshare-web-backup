@@ -9,7 +9,7 @@ const courses = ref(storage.get("courses"));
 const hasLogin = ref(storage.get("userID") !== null).value;
 const username = ref(hasLogin ? storage.get("userID") : "").value;
 
-axios.get(URL.findAll + "/" + username).then(function (resp) {
+axios.get(URL.findAll + (hasLogin ? "/" : "") + username).then(function (resp) {
   courses.value = resp.data;
   storage.set("courses", resp.data, 6000000);
 });

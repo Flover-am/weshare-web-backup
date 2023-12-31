@@ -76,6 +76,7 @@ const props = defineProps({
   courses: {
     type: Array,
     default: [],
+    length: 0,
   },
 });
 
