@@ -28,7 +28,7 @@ const isDark = useDark();
 const toggle = useToggle(isDark);
 
 const dark = ref();
-dark.value = storage.get("dark") ? storage.get("dark") : false;
+dark.value = storage.get("dark") == null ? false : storage.get("dark");
 var WeShareurl = ref();
 WeShareurl.value = dark.value ? WeShareDark : WeShare;
 const router = useRouter();
@@ -186,6 +186,14 @@ const route = useRoute();
         </template>
       </el-menu-item>
 
+      <el-menu-item index="/community" style="display: var(--nav-menu-display)">
+        <template #title>
+          <el-icon>
+            <Star />
+          </el-icon>
+          <span style="margin-right: 5px">社区</span>
+        </template>
+      </el-menu-item>
       <!--      <el-menu-item style="display: var(&#45;&#45;nav-menu-display)">-->
       <!--        <template #title>-->
       <!--          <el-icon @click="clickAvatar">-->
