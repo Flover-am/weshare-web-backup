@@ -55,7 +55,7 @@ function changeLoginType(value: any) {
  */
 const validateUsrname = (rule: any, value: any, callback: any) => {
   if (value === "") {
-    callback(new Error("请输入用户名."));
+    callback(new Error("请输入账号."));
   } else {
     callback();
   }
@@ -106,8 +106,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
         axios.post(URL.login, formSender).then(function (res) {
           if (res.data == "not exist") {
             ElMessageBox.alert(
-              "请尝试检查用户名是否输入正确，或选择账户注册。",
-              "该用户名不存在！",
+              "请尝试检查账号是否输入正确，或选择账户注册。",
+              "该账号不存在！",
               {
                 confirmButtonText: "确定",
               },
@@ -132,7 +132,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         axios.post(URL.register, formSender).then(function (res) {
           console.log(res);
           if (res.data == "exist") {
-            ElMessageBox.alert("请尝试使用该用户名登录。", "该用户名已存在！", {
+            ElMessageBox.alert("请尝试使用该账号登录。", "该账号已存在！", {
               confirmButtonText: "确定",
             });
             pageRef.value.typeIsLogin = true;
@@ -194,7 +194,7 @@ const rules = reactive({
               :rules="rules"
               label-width="5rem"
             >
-              <el-form-item label="用户名" prop="username">
+              <el-form-item label="账号" prop="username">
                 <el-input v-model="loginForm.username" autocomplete="off" />
               </el-form-item>
               <el-form-item label="密码" prop="password">

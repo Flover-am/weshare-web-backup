@@ -45,8 +45,8 @@ const options = [
 export default {
   data() {
     return {
-      uploadFileURL: URL.uploadFile,
-      uploadLinkURL: URL.uploadLink, // 上传文件的地址!
+      uploadFileURL: URL.uploadFile , // "http://127.0.0.1:996/resource/uploadfile"
+      uploadLinkURL: URL.uploadLink, // 上传文件的地址! URL.uploadLink
       loadFileParams: {
         // 上传文件的参数！
         name: "",
@@ -137,15 +137,27 @@ export default {
         type: 'warning'
       })
           .then(() => {
+            let that = this
             axios
                 .post(this.uploadLinkURL, this.loadFileParams)
                 .then(function (res) {
-                  console.log(res);
+                  let data = res.data
+                  if (data == "link_exist") {
+                    ElMessageBox.alert("资源名重复,请更换资源名", {
+                      confirmButtonText: "确定",
+                    })
+                  } else if (data == "fail") {
+                    ElMessageBox.alert("上传错误,请联系管理员", {
+                      confirmButtonText: "确定",
+                    })
+                  } else {
+                    ElMessageBox.alert("您已成功上传链接", {
+                      confirmButtonText: "确定",
+                    });
+                    that.clear()
+                  }
                 });
-            ElMessageBox.alert("您已成功上传链接", {
-              confirmButtonText: "确定",
-            });
-            this.clear()
+
           })
           .catch(() => {
           });
@@ -161,25 +173,40 @@ export default {
         type: 'warning'
       })
           .then(() => {
-            for (let i = 0; i < this.fileList.length; i++) {
-              this.loadFileParams.file = this.fileList[i]
-              axios
-                  .post(this.uploadFileURL, this.loadFileParams)
-                  .then(function (res) {
-                    console.log(res);
-                  });
-            }
+            // 本来想一次传多个文件,但数据库设计原因,只能一次传一个了
+            let formData = new FormData()
+            formData.append("name", this.loadFileParams.name)
+            formData.append("coursename", this.loadFileParams.coursename)
+            formData.append("username", this.loadFileParams.username)
+            formData.append("type", this.loadFileParams.type)
+            formData.append("intro", this.loadFileParams.intro)
+            formData.append("file", this.fileList[0].raw)
+            axios
+                .post(this.uploadFileURL, formData)
+                .then(function (res) {
+                  let data = res.data
+                  console.log(data)
 
-            ElMessageBox.alert("您已成功上传文件", {
-              confirmButtonText: "确定",
-            });
-            this.clear()
+                  if (data == "exists") {
+                    ElMessageBox.alert("资源名重复,请更换资源名", {
+                      confirmButtonText: "确定",
+                    })
+                  } else if (data == "fail") {
+                    ElMessageBox.alert("上传错误,请联系管理员", {
+                      confirmButtonText: "确定",
+                    })
+                  } else {
+                    ElMessageBox.alert("您已成功上传文件", {
+                      confirmButtonText: "确定",
+                    });
+                    that.clear()
+                  }
+                })
           })
           .catch(() => {
           });
-
     },
-    clear(){
+    clear() {
       this.loadFileParams.name = ""
       this.loadFileParams.coursename = ""
       this.loadFileParams.type = ""
@@ -352,6 +379,7 @@ export default {
           class="upload-demo"
           drag
           :headers="headers"
+          :limit="1"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           v-model:file-list="fileList"
@@ -362,6 +390,7 @@ export default {
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip" slot="tip">贡献你的资源吧</div>
+        <div class="el-upload__tip text-red" slot="tip">一次只能传一个文件哦</div>
       </el-upload>
       <el-button
           size="large"

@@ -185,6 +185,9 @@ const route = useRoute();
           <span style="margin-right: 5px" @click="clickAvatar">我的</span>
         </template>
       </el-menu-item>
+      <el-menu-item style="display: var(--nav-menu-display)">
+        <SearchBar style="align-self: center"/>
+      </el-menu-item>
 
       <el-menu-item index="/community" style="display: var(--nav-menu-display)">
         <template #title>

@@ -75,12 +75,12 @@ function cellStyle(obj) {
         }"
         :cell-style="cellStyle"
       >
-        <el-table-column prop="username" label="用户名">
+        <el-table-column prop="username" label="账号">
           <template #header>
             <el-icon style="vertical-align: -0.2em" size="large">
               <User />
             </el-icon>
-            <span style="margin-left: 5px">用户名</span>
+            <span style="margin-left: 5px">账号</span>
           </template>
           <template #default="scope">
             <el-icon

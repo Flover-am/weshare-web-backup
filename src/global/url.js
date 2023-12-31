@@ -1,4 +1,6 @@
-const BASE_URL = "http://124.222.18.205:997/";
+let BASE_URL = "http://124.222.18.205:997/";
+const LOCAL_URL = "http://localhost:9090/";
+// BASE_URL = LOCAL_URL;
 
 const COURSE_URL = BASE_URL + "course";
 const RESOURCE_URL = BASE_URL + "resource";
@@ -23,6 +25,9 @@ const URL = {
   modifyPasswd: USER_URL + "/modify/passwd",
   rank: USER_URL + "/rank",
   getContrib: USER_URL + "/getContrib/",
+  addToLike: COURSE_URL + "/addToLike/",
+  removeFromLike: COURSE_URL + "/removeFromLike/",
+  downLoad: RESOURCE_URL + "/downloadfile",
 };
 
 export default URL;
