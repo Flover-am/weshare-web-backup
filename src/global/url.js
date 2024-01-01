@@ -19,6 +19,8 @@ const URL = {
   findResourceByName: RESOURCE_URL + "/findByName/",
   uploadFile: RESOURCE_URL + "/uploadfile",
   uploadLink: RESOURCE_URL + "/uploadlink",
+  findUploadFile: RESOURCE_URL + "/findMyResource",
+  deleteUploadFile: RESOURCE_URL + "/remove",
   downloadFile: RESOURCE_URL + "/downloadfile",
 
   register: USER_URL + "/register",
