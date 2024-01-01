@@ -53,10 +53,10 @@
                   class="comment-item"
                 >
                   <el-col>
-                    <span>{{ comment.id }}</span>
+                    <span>{{ comment.time }}</span>
                     <el-row>
                       <span style="font-weight: bold"
-                        >{{ comment.author }}：</span
+                        >{{ comment.authorName }}：</span
                       >
                       <span>{{ comment.content }}</span>
                     </el-row>
@@ -65,7 +65,7 @@
                 <!-- Add a button to toggle comments visibility -->
                 <el-button
                   style="margin-top: 10px"
-                  v-if="post.comments.length > 3"
+                  v-if="post.commentsVo.length > 3"
                   @click="toggleComments(post)"
                 >
                   {{ post.showAllComments ? "收起评论" : "查看更多评论" }}
@@ -156,7 +156,8 @@ import URL from "../global/url";
 const props = defineProps({
   posts: [],
 });
-
+const postForm = ref();
+const commentForm = ref();
 const publishDialogVisible = ref(false);
 const newPostForm = ref({
   title: "",
@@ -190,11 +191,11 @@ const showPublishDialog = () => {
 const closePublishDialog = () => {
   publishDialogVisible.value = false;
   // 重置发布帖子表单
-  this.$refs.postForm.resetFields();
+  postForm.resetFields();
 };
 
 const submitPost = () => {
-  this.$refs.postForm.validate((valid) => {
+  postForm.validate((valid) => {
     if (valid) {
       // 处理提交新帖子的逻辑
       const newPost = {

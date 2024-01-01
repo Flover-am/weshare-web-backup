@@ -18,7 +18,6 @@
               {{ item.coursename }}
             </div>
             <div @click="addOrDelete(item)">
-              //
               <img
                 src="../assets/img/unstar.png"
                 v-if="!item.isLiked"

@@ -1,16 +1,24 @@
 <script setup>
-import {ref, watch} from "vue";
+import { ref, watch } from "vue";
 import CourseCard from "../components/CourseCard.vue";
 import storage from "../utils/LocalStorage";
 import URL from "../global/url";
 import axios from "axios";
-import {onMounted} from 'vue';
+import { onMounted } from "vue";
 import ResourceCard from "@/components/ResourceCard.vue";
-import {Clock, DataBoard, School, User, View, Share, Document} from "@element-plus/icons-vue";
-import {useRoute} from "vue-router";
+import {
+  Clock,
+  DataBoard,
+  School,
+  User,
+  View,
+  Share,
+  Document,
+} from "@element-plus/icons-vue";
+import { useRoute } from "vue-router";
 
 // 课程信息数据获取
-const showCourses = ref([])
+const showCourses = ref([]);
 onMounted(() => {
   courseFilter(); // 在组件挂载后调用方法
 });
@@ -18,20 +26,18 @@ onMounted(() => {
 var hasLogin = ref(storage.get("userID") !== null).value;
 const userID = ref(!hasLogin ? " 未登录" : storage.get("userID")); //userID就是userName
 // 获得用户上传资源
-const linkList = ref([])
-const fileList = ref([])
-
+const linkList = ref([]);
+const fileList = ref([]);
 
 axios.get(URL.findUploadFile + "/" + userID.value).then(function (resp) {
   linkList.value = resp.data.filter(function (element) {
-    return element.type == "link"
-  })
+    return element.type == "link";
+  });
   fileList.value = resp.data.filter(function (element) {
-    return element.type == "文件"
-  })
-  console.log(resp.data)
-})
-
+    return element.type == "文件";
+  });
+  console.log(resp.data);
+});
 
 // 控制左侧边栏折叠
 const collapse = ref(false);
@@ -53,10 +59,12 @@ window.onresize = function () {
   }
 };
 
-const flag = ref(true)
+const flag = ref(true);
 
 function courseFilter() {
-  showCourses.value = ref(storage.get("courses")).value.filter((x) => x.isLiked == true)
+  showCourses.value = ref(storage.get("courses")).value.filter(
+    (x) => x.isLiked == true,
+  );
   if (showCourses.value.length == 0) {
     ElMessage({
       message: "抱歉，未找到我的收藏",
@@ -68,7 +76,7 @@ function courseFilter() {
 // 筛选课程
 function changeIndex(index) {
   if (index == "收藏") {
-    flag.value = true
+    flag.value = true;
     if (showCourses.value.length == 0) {
       ElMessage({
         message: "抱歉，未找到我的收藏",
@@ -77,7 +85,7 @@ function changeIndex(index) {
     }
   } else {
     //这里其实应该是筛选上传的
-    flag.value = false
+    flag.value = false;
     if (linkList.value.length == 0) {
       ElMessage({
         message: "抱歉，未找到上传链接",
@@ -93,32 +101,31 @@ function changeIndex(index) {
   }
 }
 
-
 function deleteLink(name) {
   linkList.value = linkList.value.filter(function (element) {
-    return element.name != name
-  })
+    return element.name != name;
+  });
 }
 
 function deleteFile(name) {
   fileList.value = fileList.value.filter(function (element) {
-    return element.name != name
-  })
+    return element.name != name;
+  });
 }
 </script>
 
 <template>
   <div class="class-side-bar">
     <el-menu
-        style="
+      style="
         border-right-width: 0;
         background-color: transparent;
         --el-menu-hover-bg-color: transparent;
         --el-menu-bg-color: transparent;
       "
-        :collapse="collapse"
-        @select="changeIndex"
-        unique-opened
+      :collapse="collapse"
+      @select="changeIndex"
+      unique-opened
     >
       <el-scrollbar style="height: 200px">
         <el-menu-item index="收藏"> 我的收藏</el-menu-item>
@@ -129,30 +136,68 @@ function deleteFile(name) {
   <div v-if="flag" class="content-container">
     <CourseCard :courses="showCourses"></CourseCard>
   </div>
-  <div v-if="!flag" style="z-index: 0; display: flex; flex-direction: column; align-items: center;">
+  <div
+    v-if="!flag"
+    style="
+      z-index: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-left: 100px;
+      width: 90%;
+    "
+  >
     <el-card class="table-container">
       <div>
         <div style="font-size: larger; margin-bottom: 20px">
-          <el-icon style="vertical-align: -0.2em; margin-right: 5px;" size="large">
-            <Share/>
+          <el-icon
+            style="vertical-align: -0.2em; margin-right: 5px"
+            size="large"
+          >
+            <Share />
           </el-icon>
           链接资源:
-          <hr class="line">
+          <hr class="line" />
         </div>
-        <div style="display: flex; flex-direction: column; align-items: center; transition: all 0.5s;">
-          <ResourceCard :resources="linkList" :deleteButton="true" @name="deleteLink"></ResourceCard>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.5s;
+          "
+        >
+          <ResourceCard
+            :resources="linkList"
+            :deleteButton="true"
+            @name="deleteLink"
+          ></ResourceCard>
         </div>
       </div>
       <div>
         <div style="font-size: larger; margin-bottom: 20px">
-          <el-icon style="vertical-align: -0.2em; margin-right: 5px;" size="large">
-            <Document/>
+          <el-icon
+            style="vertical-align: -0.2em; margin-right: 5px"
+            size="large"
+          >
+            <Document />
           </el-icon>
           文件资源:
-          <hr class="line">
+          <hr class="line" />
         </div>
-        <div style="display: flex; flex-direction: column; align-items: center; transition: all 0.5s;">
-          <ResourceCard :resources="fileList" :deleteButton="true" @name="deleteFile"></ResourceCard>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.5s;
+          "
+        >
+          <ResourceCard
+            :resources="fileList"
+            :deleteButton="true"
+            @name="deleteFile"
+          ></ResourceCard>
         </div>
       </div>
     </el-card>
@@ -180,8 +225,8 @@ function deleteFile(name) {
   left: 0;
   display: var(--side-bar-display);
 }
-.line{
-  width: 1100px;
+.line {
+  width: 100%;
 }
 :deep(.el-scrollbar__bar.is-horizontal) {
   height: 0 !important;
