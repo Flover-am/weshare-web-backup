@@ -18,6 +18,7 @@
               {{ item.coursename }}
             </div>
             <div @click="addOrDelete(item)">
+              //
               <img
                 src="../assets/img/unstar.png"
                 v-if="!item.isLiked"
@@ -114,22 +115,22 @@ function addOrDelete(item) {
     return;
   }
   const username = storage.get("userID");
-  const courses = storage.get("courses")
-  const index = courses.findIndex(element => item.id == element.id)
+  const courses = storage.get("courses");
+  const index = courses.findIndex((element) => item.id == element.id);
   if (item.isLiked == false) {
-    item.isLiked = true
-    courses[index].isLiked = true
+    item.isLiked = true;
+    courses[index].isLiked = true;
     axios
       .get(URL.addToLike + username + "/" + item.id)
       .then(function (resp) {});
   } else {
-    item.isLiked = false
-    courses[index].isLiked = false
+    item.isLiked = false;
+    courses[index].isLiked = false;
     axios
       .get(URL.removeFromLike + username + "/" + item.id)
       .then(function (resp) {});
   }
-  storage.set("courses",courses,6000000)
+  storage.set("courses", courses, 6000000);
 }
 </script>
 <style scoped>
