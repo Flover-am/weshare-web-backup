@@ -20,12 +20,9 @@ const userID = ref(!hasLogin ? " 未登录" : storage.get("userID")); //userID�
 // 获得用户上传资源
 const linkList = ref([])
 const fileList = ref([])
-//TODO:更改url
-// URL.findResourceByCourseName + "人机交互"
-// URL.findUploadFile + "/" + userID
-const isLinkShow = ref(false)
-const isFileShow = ref(false)
-axios.get(URL.findResourceByCourseName + "人机交互").then(function (resp) {
+
+
+axios.get(URL.findUploadFile + "/" + userID.value).then(function (resp) {
   linkList.value = resp.data.filter(function (element) {
     return element.type == "link"
   })
@@ -70,7 +67,6 @@ function courseFilter() {
 
 // 筛选课程
 function changeIndex(index) {
-  console.log(index);
   if (index == "收藏") {
     flag.value = true
     if (showCourses.value.length == 0) {
@@ -87,21 +83,14 @@ function changeIndex(index) {
         message: "抱歉，未找到上传链接",
         type: "warning",
       });
-    } else {
-      isLinkShow.value = true
     }
     if (fileList.value.length == 0) {
       ElMessage({
         message: "抱歉，未找到上传文件",
         type: "warning",
       });
-    } else {
-      isFileShow.value = true
     }
   }
-
-  console.log(flag.value)
-
 }
 
 
@@ -109,14 +98,12 @@ function deleteLink(name) {
   linkList.value = linkList.value.filter(function (element) {
     return element.name != name
   })
-  console.log(name)
 }
 
 function deleteFile(name) {
   fileList.value = fileList.value.filter(function (element) {
     return element.name != name
   })
-  console.log(name)
 }
 </script>
 
@@ -142,9 +129,9 @@ function deleteFile(name) {
   <div v-if="flag" class="content-container">
     <CourseCard :courses="showCourses"></CourseCard>
   </div>
-  <div v-if="!flag && (isLinkShow || isFileShow)" style="z-index: 0; display: flex; flex-direction: column; align-items: center;">
+  <div v-if="!flag" style="z-index: 0; display: flex; flex-direction: column; align-items: center;">
     <el-card class="table-container">
-      <div v-if="isLinkShow">
+      <div>
         <div style="font-size: larger; margin-bottom: 20px">
           <el-icon style="vertical-align: -0.2em; margin-right: 5px;" size="large">
             <Share/>
@@ -156,7 +143,7 @@ function deleteFile(name) {
           <ResourceCard :resources="linkList" :deleteButton="true" @name="deleteLink"></ResourceCard>
         </div>
       </div>
-      <div v-if="isFileShow">
+      <div>
         <div style="font-size: larger; margin-bottom: 20px">
           <el-icon style="vertical-align: -0.2em; margin-right: 5px;" size="large">
             <Document/>

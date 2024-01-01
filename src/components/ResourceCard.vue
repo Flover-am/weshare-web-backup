@@ -28,7 +28,6 @@ function downLoad(id) {
   window.location = URL.downLoad + "?resourceId=" + id; // url + 下载的resourceId
 }
 
-//TODO:URL更改
 function clickDelete(id, name) {
   ElMessageBox.alert('确认要删除' + name + '吗?', {
     confirmButtonText: '确定',
