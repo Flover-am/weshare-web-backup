@@ -31,7 +31,7 @@ function downLoad(i) {
         <el-card class="table-container">
             <el-row>
                 <el-col :span="12">
-                    <img :src="'data:image/png;base64,' + picture" style="width: 80%"/>
+                    <img :src=route.query.picture style="width: 80%"/>
                 </el-col>
                 <el-col :span="12">
                     <div class="briefIro">

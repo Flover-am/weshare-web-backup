@@ -98,7 +98,7 @@ function goToCourse(item) {
       itro: item.introduction,
       teacher: item.teachername,
       during: item.studytime,
-      picture: item.picture,
+      picture: item.pictureUrl,
       id: item.id,
       viewtime: item.viewtimes,
     },
