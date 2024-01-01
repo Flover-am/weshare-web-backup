@@ -143,11 +143,11 @@ function deleteFile(name) {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-left: 100px;
+      margin-left: 50px;
       width: 90%;
     "
   >
-    <el-card class="table-container">
+    <el-card class="table-container" style="margin-left: 10px; width: 90%">
       <div>
         <div style="font-size: larger; margin-bottom: 20px">
           <el-icon

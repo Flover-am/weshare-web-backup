@@ -11,7 +11,7 @@ import CommunityPart from "../components/CommunityPart.vue";
 import { POST_URL } from "../global/url.js";
 const posts = ref([]);
 onMounted(() => {
-  axios.get(POST_URL + "/1").then((response) => {
+  axios.get(POST_URL + "/0").then((response) => {
     posts.value = response.data.map((post) => {
       return {
         ...post, // 保留原有属性
@@ -26,12 +26,12 @@ onMounted(() => {
 </script>
 <style scoped>
 .content-container {
-  margin: auto;
   z-index: 0;
   overflow: hidden;
   width: var(--home-content-container-width);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  height: var(--home-content-container-height);
 }
 </style>

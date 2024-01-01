@@ -13,7 +13,8 @@ const URL = {
   findCourseByName: COURSE_URL + "/findByName/",
   getPicture: COURSE_URL + "/getpicture/",
   findAllName: COURSE_URL + "/findAllName",
-
+  PUBLISH_POST_URL: BASE_URL + "post/publish",
+  COMMENT_PUBLISH_URL: BASE_URL + "comment/publish",
   findByCourseId: RESOURCE_URL + "/",
   findResourceByCourseName: RESOURCE_URL + "/findByCoursename/",
   findResourceByName: RESOURCE_URL + "/findByName/",

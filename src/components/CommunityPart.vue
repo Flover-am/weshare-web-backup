@@ -1,23 +1,23 @@
 <template>
-  <div>
+  <div style="width: var(--home-content-container-width)">
     <el-container>
       <el-container>
         <el-aside
-          width="200px"
+          width="20%"
           style="background-color: var(--el-bg-color); padding: 20px"
         >
           <!-- 侧边栏 -->
-          <el-menu :default-openeds="['1']">
-            <el-menu-item index="1-1">技术讨论</el-menu-item>
-            <el-menu-item index="1-2">资源分享</el-menu-item>
-            <el-menu-item index="1-3">闲聊灌水</el-menu-item>
+          <el-menu v-model="index" :default-openeds="index">
+            <el-menu-item index="0" @click="getposts(0)">技术讨论</el-menu-item>
+            <el-menu-item index="1" @click="getposts(1)">资源分享</el-menu-item>
+            <el-menu-item index="2" @click="getposts(2)">闲聊灌水</el-menu-item>
           </el-menu>
         </el-aside>
 
-        <el-main style="width: 100%">
+        <el-main style="width: 200%">
           <!-- 主要内容区域 -->
           <el-row :gutter="20" style="margin: 20px">
-            <el-col :span="18" v-for="post in props.posts" :key="post.id">
+            <el-col :span="18" v-for="post in currentPosts" :key="post.id">
               <!-- 帖子列表 -->
               <el-card class="forum-card">
                 <div slot="header" class="clearfix">
@@ -83,7 +83,7 @@
                         placeholder="发表评论"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item style="margin-left: 88%; margin-top: 10px">
+                    <el-form-item style="margin-left: 85%; margin-top: 10px">
                       <el-button @click="submitComment(post.id)"
                         >发表评论</el-button
                       >
@@ -92,6 +92,15 @@
                 </div>
               </el-card>
             </el-col>
+            <div class="pagination-container">
+              <el-pagination
+                v-if="new_post.length > pageSize"
+                :current-page="currentPage"
+                :page-size="1"
+                :total="Math.ceil(new_post.length / pageSize)"
+                @current-change="handlePageChange"
+              />
+            </div>
             <el-col :span="6">
               <el-button
                 type="primary"
@@ -152,10 +161,29 @@ import { useRouter } from "vue-router";
 import storage from "../utils/LocalStorage";
 
 import URL from "../global/url";
-
+import axios from "axios";
+import { POST_URL } from "../global/url.js";
 const props = defineProps({
   posts: [],
 });
+const router = useRouter();
+const new_post = ref([]);
+new_post.value = props.posts;
+const currentPage = ref(1);
+const pageSize = 8; // 每页显示的数量
+onActivated: if (!storage.get("userID")) {
+  router.push("/login");
+}
+
+const currentPosts = computed(() => {
+  const startIndex = (currentPage.value - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  if (props.posts != null)
+    return new_post.value.length == 0
+      ? props.posts.slice(startIndex, endIndex)
+      : new_post.value.slice(startIndex, endIndex);
+});
+const index = ref(0);
 const postForm = ref();
 const commentForm = ref();
 const publishDialogVisible = ref(false);
@@ -191,42 +219,76 @@ const showPublishDialog = () => {
 const closePublishDialog = () => {
   publishDialogVisible.value = false;
   // 重置发布帖子表单
-  postForm.resetFields();
+  postForm.value.resetFields();
 };
-
+function handlePageChange(page) {
+  currentPage.value = page;
+}
 const submitPost = () => {
-  postForm.validate((valid) => {
-    if (valid) {
-      // 处理提交新帖子的逻辑
-      const newPost = {
-        title: newPostForm.value.title,
-        content: newPostForm.value.content,
-        type: 0,
-        authorName: storage.get("userID"),
-      };
-      props.posts.value.push(newPost);
+  // 处理提交新帖子的逻辑
+  const newPost = {
+    title: newPostForm.value.title,
+    content: newPostForm.value.content,
+    type: index.value,
+    authorName: storage.get("userID"),
+  };
+  axios({ method: "post", url: URL.PUBLISH_POST_URL, data: newPost }).then(
+    (response) => {
+      new_post.value.unshift({
+        ...response.data,
+        showAllComments: false,
+        newCommentForm: "",
+        // 添加新属性
+      });
+      console.log({
+        ...response.data,
+        showAllComments: false,
+        newCommentForm: "",
+        // 添加新属性
+      });
+    },
+  );
 
-      // 关闭发布帖子对话框
-      closePublishDialog();
-    }
+  // 关闭发布帖子对话框
+  closePublishDialog();
+};
+const getposts = (type) => {
+  axios.get(POST_URL + "/" + type).then((response) => {
+    new_post.value = response.data.map((post) => {
+      return {
+        ...post, // 保留原有属性
+        showAllComments: false,
+        newCommentForm: "",
+        // 添加新属性
+      };
+    });
+    index.value = type;
+    currentPage.value = 1;
+    console.log(index.value);
+    console.log(new_post.value);
   });
 };
-
 const submitComment = (id) => {
   // 将评论添加到当前帖子的评论列表
   const postId = id; /* 获取当前帖子的ID，例如 this.$route.params.postId */
-  const postIndex = props.posts.value.findIndex((post) => post.id === postId);
+  const postIndex = new_post.value.findIndex((post) => post.id === postId);
   const newComment = {
-    id: new Date().toLocaleString(), // 使用时间戳作为评论ID
-    author: "当前用户", // 替换为实际的用户信息
-    content: props.posts.value[postIndex].newCommentForm,
+    postId: postIndex,
+    authorName: storage.get("userID"), // 替换为实际的用户信息
+    content: new_post.value[postIndex].newCommentForm,
   };
-
   if (postIndex !== -1 && newComment.content !== "") {
-    props.posts.value[postIndex].comments.push(newComment);
+    axios({
+      method: "post",
+      url: URL.COMMENT_PUBLISH_URL,
+      data: newComment,
+    }).then((response) => {
+      new_post.value[postIndex].commentsVo.push(response.data);
+      console.log(response.data);
+    });
   }
   // 清空评论表单
-  props.posts.value[postIndex].newCommentForm = "";
+  new_post.value[postIndex].newCommentForm = "";
 };
 </script>
 <style scoped>
@@ -246,5 +308,8 @@ const submitComment = (id) => {
   position: fixed;
   bottom: 10px;
   right: 10px;
+}
+.pagination-container {
+  margin-top: 1rem; /* 为确保翻页组件与卡片之间有一定间距 */
 }
 </style>

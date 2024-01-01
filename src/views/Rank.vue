@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { onActivated, onMounted, ref } from "vue";
 import axios from "axios";
 import {
   User,
@@ -12,7 +12,7 @@ import URL from "../global/url";
 import storage from "../utils/LocalStorage.js";
 import { useRouter } from "vue-router";
 const router = useRouter();
-window.onActivated = checkNotLogin();
+onActivated: checkNotLogin();
 function checkNotLogin() {
   if (!storage.get("userID")) {
     router.push("/login");
