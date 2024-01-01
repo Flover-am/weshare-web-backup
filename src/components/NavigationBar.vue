@@ -75,10 +75,17 @@ function clickAvatar() {
     //     position:'bottom-right',
     //     duration:'1000'
     // })
-    router.push("/Mypage");
+    router.push("/Mypage")
+    setTimeout(() => {
+      // 在这里执行需要延迟的代码
+      // 例如，可以触发某个操作或进行异步调用
+      // ...
+      router.go(0);
+      console.log('延迟执行完成');
+    }, 1); // 2000 毫秒的延迟时间
+
   }
 }
-
 /**
  * 点击修改密码事件：跳转至/account页面
  */
@@ -95,8 +102,13 @@ function clickLogout() {
     //storage.remove("courses")
   }
   router.push({ path: "/" });
-  router.push({ path: "/" });
-  router.go(0);
+  setTimeout(() => {
+    // 在这里执行需要延迟的代码
+    // 例如，可以触发某个操作或进行异步调用
+    // ...
+    router.go(0);
+    console.log('延迟执行完成');
+  }, 1); // 2000 毫秒的延迟时间
 }
 
 function clickUpload() {

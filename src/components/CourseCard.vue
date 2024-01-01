@@ -71,7 +71,6 @@ import { useRouter } from "vue-router";
 import storage from "../utils/LocalStorage";
 import axios from "axios";
 import URL from "../global/url";
-
 const props = defineProps({
   courses: {
     type: Array,
@@ -115,16 +114,22 @@ function addOrDelete(item) {
     return;
   }
   const username = storage.get("userID");
-
+  const courses = storage.get("courses")
+  const index = courses.findIndex(element => item.id == element.id)
   if (item.isLiked == false) {
+    item.isLiked = true
+    courses[index].isLiked = true
     axios
       .get(URL.addToLike + username + "/" + item.id)
       .then(function (resp) {});
   } else {
+    item.isLiked = false
+    courses[index].isLiked = false
     axios
       .get(URL.removeFromLike + username + "/" + item.id)
       .then(function (resp) {});
   }
+  storage.set("courses",courses,6000000)
 }
 </script>
 <style scoped>
