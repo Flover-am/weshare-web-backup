@@ -9,7 +9,7 @@
       >
         <template #header>
           <img
-            :src="'data:image/png;base64,' + item.picture"
+            :src="item.pictureUrl"
             @click="goToCourse(item)"
             style="width: 16rem; height: 20rem; object-fit: cover"
           />
@@ -79,7 +79,7 @@ const props = defineProps({
     length: 0,
   },
 });
-
+console.log(props.courses);
 const router = useRouter();
 const currentPage = ref(1);
 const pageSize = 8; // 每页显示的数量

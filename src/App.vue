@@ -7,6 +7,7 @@ import WeShare from "./assets/WESHARE.svg";
 import WeShareDark from "./assets/WESHAREDARK.svg";
 import { useRoute } from "vue-router";
 import { watch, ref } from "vue";
+
 const route = useRoute();
 var isDark = false;
 var bgimgurl = isDark ? BgImgDark : BgImg;
@@ -119,16 +120,9 @@ window.onscroll = function () {
         </keep-alive>
       </router-view>
     </el-main>
-    <el-footer style="width: 100%; text-align: center; margin-top: 50px">
-      <el-divider
-        content-position="center"
-        style="
-          --el-bg-color: var(--el-bg-color-page);
-          padding-bottom: 50px;
-          transition: all 5s;
-        "
-      >
-      </el-divider>
+    <el-footer
+      style="width: 100%; height: 10px; text-align: center; margin-top: 0px"
+    >
     </el-footer>
   </el-container>
 </template>

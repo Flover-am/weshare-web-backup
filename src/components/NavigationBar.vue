@@ -13,7 +13,7 @@ import {
   User,
   Plus,
   Star,
-  Share
+  Share,
 } from "@element-plus/icons-vue";
 import BgImg from "../assets/img/home_pic.jpg";
 import BgImgDark from "../assets/img/home_pic_dark.jpg"; //
@@ -26,12 +26,9 @@ import axios from "axios";
 import URL from "../global/url";
 
 const isDark = useDark();
-const toggle = useToggle(isDark);
 
-const dark = ref();
-dark.value = storage.get("dark") == null ? false : storage.get("dark");
 var WeShareurl = ref();
-WeShareurl.value = dark.value ? WeShareDark : WeShare;
+WeShareurl.value = isDark.value ? WeShareDark : WeShare;
 const router = useRouter();
 
 const activeIndex = ref("/");
@@ -41,7 +38,9 @@ var hasLogin = ref(storage.get("userID") !== null).value;
 const userID = ref(!hasLogin ? " 未登录" : storage.get("userID"));
 const emit = defineEmits(["change"]);
 
-onActivated: emit("change", dark.value);
+onActivated: {
+  emit("change", isDark.value);
+}
 var userContribution = -1;
 
 const userContrib = () => {
@@ -55,8 +54,7 @@ const userContrib = () => {
   }
 };
 function change() {
-  storage.set("dark", dark.value, 6000000);
-  if (dark.value) WeShareurl.value = WeShareDark;
+  if (isDark.value) WeShareurl.value = WeShareDark;
   else WeShareurl.value = WeShare;
 }
 /**
@@ -187,8 +185,7 @@ const route = useRoute();
         </template>
       </el-menu-item>
 
-
-      <el-menu-item index="/community" style="display: var(--nav-menu-display)">
+      <el-menu-item index="/community">
         <template #title>
           <el-icon>
             <Share />
@@ -246,7 +243,7 @@ const route = useRoute();
         </el-button>
         <el-switch
           size="large"
-          v-model="dark"
+          v-model="isDark"
           style="
             align-self: center;
             --el-switch-on-color: var(--color-main);
@@ -257,8 +254,7 @@ const route = useRoute();
           :active-icon="MostlyCloudy"
           :inactive-icon="sunIcon"
           @change="
-            $emit('change', dark);
-            toggle();
+            $emit('change', isDark);
             change();
           "
         />

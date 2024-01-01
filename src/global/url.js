@@ -6,6 +6,8 @@ const COURSE_URL = BASE_URL + "course";
 const RESOURCE_URL = BASE_URL + "resource";
 const USER_URL = BASE_URL + "user";
 
+export const POST_URL = BASE_URL + "post/get_posts";
+
 const URL = {
   findAll: COURSE_URL + "/findAll",
   findCourseByName: COURSE_URL + "/findByName/",
