@@ -400,7 +400,7 @@ export default {
         v-if="loadFileParams.type == '链接'"
         plain
         color="rgb(1, 132, 127)"
-        >将信息上传到服务器
+        >提交
       </el-button>
 
       <el-button
@@ -409,7 +409,7 @@ export default {
         v-if="loadFileParams.type == '文件'"
         plain
         color="rgb(1, 132, 127)"
-        >将信息上传到服务器
+        >提交
       </el-button>
     </el-card>
   </div>
