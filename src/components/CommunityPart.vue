@@ -273,7 +273,7 @@ const submitComment = (id) => {
   const postId = id; /* 获取当前帖子的ID，例如 this.$route.params.postId */
   const postIndex = new_post.value.findIndex((post) => post.id === postId);
   const newComment = {
-    postId: postIndex,
+    postId: postId,
     authorName: storage.get("userID"), // 替换为实际的用户信息
     content: new_post.value[postIndex].newCommentForm,
   };
