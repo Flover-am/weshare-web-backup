@@ -20,25 +20,32 @@
 
 stages:          # List of stages for jobs, and their order of execution
   - build
-  - deploy
+  # - deploy
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
+  environment: production
   script:
     - echo "Compiling the code..."
     - docker build -t devops/web_hci .
     - docker save devops/web_hci -o web_hci.tar
     - echo "Compile complete."
-  artifacts:
-    untracked: true
-
-deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
-  script:
     - echo "Deploying application..."
     - sshpass -p "$SERVER_PASSWORD" scp -o StrictHostKeyChecking=no web_hci.tar root@$SERVER_IP:~
     - sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no root@$SERVER_IP 'docker container rm -f
       web_hci; docker load -i web_hci.tar; docker run -d --name web_hci -p 995:80
       devops/web_hci /bin/bash -c "nginx; tail -f /dev/null"'
     - echo "Application successfully deployed."
+  artifacts:
+    untracked: true
+
+# deploy-job:      # This job runs in the deploy stage.
+  # stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  # environment: production
+  # script:
+  #   - echo "Deploying application..."
+  #   - sshpass -p "$SERVER_PASSWORD" scp -o StrictHostKeyChecking=no web_hci.tar root@$SERVER_IP:~
+  #   - sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no root@$SERVER_IP 'docker container rm -f
+  #     web_hci; docker load -i web_hci.tar; docker run -d --name web_hci -p 995:80
+  #     devops/web_hci /bin/bash -c "nginx; tail -f /dev/null"'
+  #   - echo "Application successfully deployed."
